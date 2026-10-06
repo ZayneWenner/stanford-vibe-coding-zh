@@ -1,0 +1,275 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>追踪（Trace）与跨度（Span）：你应当了解的可观测性（Observability）基础</title><style>body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;max-width:860px;margin:auto;padding:24px;line-height:1.8;color:#1a1a1a}h1,h2,h3{border-bottom:1px solid #eee;padding-bottom:6px}pre,code{background:#f6f8fa;padding:2px 6px;border-radius:4px;font-family:ui-monospace,Consolas,monospace;overflow-x:auto}pre{padding:16px}blockquote{border-left:4px solid #ccc;margin:0;padding:0 16px;color:#555}a{color:#0366d6}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ddd;padding:8px}</style></head><body>
+<p><em>来源：https://last9.io/blog/traces-spans-observability-basics/ ｜ 机器翻译+人工校对稿，术语以 glossary.md 为准。</em></p>
+
+<h1>追踪（Trace）与跨度（Span）：你应当了解的可观测性（Observability）基础</h1>
+<p><em>Anjali Udasi ｜ 2025 年 4 月 23 日</em></p>
+
+<p>在现代软件架构中，应用不仅在变得更大——还在变得更分布式。随着微服务、无服务器（serverless）函数以及跨多个环境运行的容器，理解你的系统内部发生了什么，就像试图在暴风雨中追踪一滴雨。</p>
+
+<p>这正是追踪（trace）与跨度（span）登场的地方。这些可观测性（Observability）工具不只是流行词——它们是帮你理解复杂分布式系统的秘密武器。让我们拆解一下追踪（trace）与跨度（span）是什么、为什么重要，以及你该如何用它们更快地排查故障、构建更可靠的系统。</p>
+
+<h2>理解追踪（Trace）与跨度（Span）：核心概念</h2>
+
+<p>追踪（trace）捕捉一个请求穿越分布式系统时的完整旅程。可以把追踪（trace）想象成一个请求从开始到结束的完整故事——从用户点击按钮，到他们看到结果。</p>
+
+<p>跨度（span）是追踪（trace）的构建块。每个跨度（span）代表了这段旅程中的一个工作单元——比如一次数据库查询、一次 API 调用，或一次函数执行。跨度（span）彼此嵌套，以展示操作之间的父子关系。</p>
+
+<p>用简单的术语来说，它们的关系如下：</p>
+
+<ul>
+<li>一个追踪（trace）包含多个跨度（span）</li>
+<li>每个跨度（span）代表一个操作</li>
+<li>跨度（span）带有计时数据与元数据</li>
+<li>跨度（span）可以嵌套，以展示操作彼此之间的关联</li>
+</ul>
+
+<pre><code>Trace ├── Span (API Gateway) │   ├── Span (Auth Service) │   └── Span (User Service) │       └── Span (Database Query) └── Span (Response Formatting)
+</code></pre>
+
+<p>如果你好奇追踪（trace）与跨度（span）如何与指标（metrics）、日志（logs）和事件（events）配合，这篇文章拆解了这四类信号。</p>
+
+<h2>追踪（Trace）与跨度（Span）对 DevOps 从业者的价值</h2>
+
+<p>你正在运行一个由几十个微服务组成的复杂系统。突然，用户报告结账流程变慢了。如果没有追踪（tracing），你需要逐个检查每个服务，浪费宝贵的时间。</p>
+
+<p>有了追踪（trace）与跨度（span），你可以：</p>
+
+<ul>
+<li><strong>即时定位瓶颈</strong>：精确看到是哪个服务或函数在耗时过长</li>
+<li><strong>跨服务边界调试</strong>：跟随请求在服务之间跳转</li>
+<li><strong>理解依赖关系</strong>：可视化你的服务如何连接并相互依赖</li>
+<li><strong>改善性能</strong>：精准识别并修复缓慢的操作</li>
+<li><strong>降低平均恢复时间（MTTR）</strong>：问题出现时更快到达根因</li>
+</ul>
+
+<h2>追踪（Trace）与跨度（Span）的技术实现</h2>
+
+<p>让我们深入分布式系统中追踪（tracing）实际运作的细枝末节。</p>
+
+<h3>追踪（Trace）上下文与传播</h3>
+
+<p>为了让追踪（tracing）能够跨服务边界工作，每个服务都需要知道它正在处理同一请求的一部分。这是通过<strong>上下文传播（context propagation）</strong>实现的——在服务之间传递一个 trace ID 和 span ID。</p>
+
+<p>当请求首次进入你的系统时，它会获得一个唯一的 trace ID。随着请求在服务间移动，这个 ID 随之旅行（通常作为 HTTP 头）。然后每个服务创建自己的跨度（span），但把它们链接到同一个追踪（trace）。</p>
+
+<h3>跨度（Span）属性与事件</h3>
+
+<p>跨度（span）不只是时间戳——它们富含数据：</p>
+
+<ul>
+<li><strong>名称（Name）</strong>：这个跨度（span）代表什么操作</li>
+<li><strong>计时（Timing）</strong>：开始与结束时间</li>
+<li><strong>状态（Status）</strong>：成功、错误等</li>
+<li><strong>属性（Attributes）</strong>：自定义的键值对（如 <code>user_id</code> 或 <code>cart_size</code>）</li>
+<li><strong>事件（Events）</strong>：跨度（span）内部值得注意的occurrence</li>
+<li><strong>链接（Links）</strong>：与其他跨度（span）的连接</li>
+</ul>
+
+<h3>采样策略</h3>
+
+<p>追踪（tracing）一切会产生海量数据。这就是为什么大多数系统使用采样（sampling）——只收集一定比例的追踪（trace）。明智的采样策略包括：</p>
+
+<ul>
+<li><strong>基于头部（Head-based）的采样</strong>：在请求开始时决定是否采样</li>
+<li><strong>基于尾部（Tail-based）的采样</strong>：在请求完成后决定（更利于捕获错误）</li>
+<li><strong>优先级（Priority）采样</strong>：总是追踪重要操作，而对常规操作采样</li>
+</ul>
+
+<p>如果你想了解可观测性（Observability）、遥测（telemetry）与监控（monitoring）之间的区别，可以看看这篇有用的文章：Observability vs Telemetry vs Monitoring。</p>
+
+<h2>追踪（Tracing）实施指南：工具与框架</h2>
+
+<p>准备好为你的系统加入追踪（tracing）了吗？你需要的是这些：</p>
+
+<h3>OpenTelemetry：行业标准</h3>
+
+<p>OpenTelemetry 已成为实现追踪（trace）与跨度（span）的首选框架。它提供：</p>
+
+<ul>
+<li>面向所有主流编程语言的库</li>
+<li>厂商中立的 API 与 SDK</li>
+<li>针对流行框架的自动埋点（instrumentation）</li>
+<li>一致的收集与导出数据的方式</li>
+</ul>
+
+<h3>追踪（Tracing）工具箱</h3>
+
+<p>有几个工具可以帮你收集、存储并可视化你的追踪（trace）：</p>
+
+<table>
+<thead><tr><th>工具</th><th>类型</th><th>最适合</th></tr></thead>
+<tbody>
+<tr><td>Last9</td><td>一体化可观测性（observability）</td><td>基于可预测定价的、高基数（high-cardinality）且经济高效的可观测性（observability）</td></tr>
+<tr><td>Jaeger</td><td>开源追踪（tracing）</td><td>自托管的追踪（tracing）可视化</td></tr>
+<tr><td>Zipkin</td><td>开源追踪（tracing）</td><td>简单的分布式追踪（tracing）</td></tr>
+<tr><td>Grafana Tempo</td><td>追踪（tracing）后端</td><td>与 Grafana 仪表盘集成</td></tr>
+<tr><td>OpenTelemetry Collector</td><td>数据收集管线</td><td>处理并路由遥测（telemetry）数据</td></tr>
+</tbody>
+</table>
+
+<p>如果你在寻找符合预算的可观测性（Observability）方案，Last9 值得一看。它的定价基于摄入的事件数，让成本可预测。此外，我们的平台能在大规模下处理高基数（high-cardinality）数据，并与 OpenTelemetry 和 Prometheus 集成，把你的指标（metrics）、日志（logs）和追踪（traces）汇聚到一处。</p>
+
+<h2>在代码中实现追踪（Tracing）</h2>
+
+<p>下面是一个简化的示例，展示如何使用 OpenTelemetry 在 Node.js 应用中创建跨度（span）：</p>
+
+<pre><code>// Initialize the OpenTelemetry SDK (once in your app)
+const { NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
+const { SimpleSpanProcessor } = require('@opentelemetry/sdk-trace-base');
+const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-http');
+
+const provider = new NodeTracerProvider();
+const exporter = new OTLPTraceExporter({
+  url: 'http://localhost:4318/v1/traces',
+});
+provider.addSpanProcessor(new SimpleSpanProcessor(exporter));
+provider.register();
+
+// Get a tracer
+const { trace } = require('@opentelemetry/api');
+const tracer = trace.getTracer('my-service');
+
+// Create spans in your code
+async function processOrder(orderId) {
+  const span = tracer.startSpan('process-order');
+
+  // Add attributes to the span
+  span.setAttribute('order.id', orderId);
+  span.setAttribute('customer.type', 'premium');
+
+  try {
+    // Do work...
+
+    // Create a child span
+    const dbSpan = tracer.startSpan('database-query', { parent: span });
+    try {
+      // Run database query...
+      dbSpan.end();
+    } catch (error) {
+      dbSpan.setStatus({ code: SpanStatusCode.ERROR });
+      dbSpan.recordException(error);
+      dbSpan.end();
+      throw error;
+    }
+
+    span.end();
+  } catch (error) {
+    span.setStatus({ code: SpanStatusCode.ERROR });
+    span.recordException(error);
+    span.end();
+    throw error;
+  }
+}
+</code></pre>
+
+<p>想知道 OpenTelemetry 与传统 APM 工具相比如何？这篇文章拆解了关键区别：OpenTelemetry vs Traditional APM Tools。</p>
+
+<h2>高级追踪（Tracing）技术</h2>
+
+<p>一旦你部署了基础追踪（tracing），这些高级技术能把你的可观测性（Observability）提升到下一个层级。</p>
+
+<h3>分布式上下文管理</h3>
+
+<p>在复杂系统中，你需要管理的不只是 trace ID 的上下文。W3C Trace Context 规范为以下内容提供了标准：</p>
+
+<ul>
+<li><code>traceparent</code>：包含 trace ID 与父跨度（span）ID</li>
+<li><code>tracestate</code>：允许厂商添加自定义上下文数据</li>
+</ul>
+
+<p>使用这些头信息，能确保你的追踪（tracing）在不同服务与厂商之间正常工作。</p>
+
+<h3>追踪（Trace）、指标（Metrics）与日志（Logs）之间的关联</h3>
+
+<p>可观测性（Observability）真正的威力来自连接不同的信号：</p>
+
+<ul>
+<li><strong>范例追踪（Exemplar traces）</strong>：把指标（metrics）链接到生成它们的追踪（trace）</li>
+<li><strong>日志中的 Trace ID</strong>：在日志消息中加入 trace ID 以便交叉引用</li>
+<li><strong>自定义属性（Custom attributes）</strong>：在所有遥测（telemetry）类型中使用一致的属性</li>
+</ul>
+
+<h3>错误处理与异常追踪</h3>
+
+<p>当异常发生时，跨度（span）能提供关键上下文：</p>
+
+<ul>
+<li>用错误状态标记跨度（span）</li>
+<li>记录带有堆栈跟踪（stack traces）的异常</li>
+<li>向跨度（span）添加展示错误进展的事件</li>
+<li>创建能在服务边界间携带错误上下文的 baggage 项</li>
+</ul>
+
+<p>想更深入地了解如何提前发现问题、提升系统可靠性，可以看看这篇关于主动监控（proactive monitoring）的文章：Proactive Monitoring。</p>
+
+<h2>真实世界中的追踪（Tracing）模式与反模式</h2>
+
+<h3>有效的追踪（Tracing）模式</h3>
+
+<ul>
+<li><strong>有意义的跨度（span）名称</strong>：使用一致的命名约定，如 <code>service_name/operation</code></li>
+<li><strong>恰当的粒度</strong>：为重要的操作创建跨度（span），而不是为每一个函数调用</li>
+<li><strong>正确的上下文传播（propagation）</strong>：确保追踪（trace）上下文流经所有通信渠道</li>
+<li><strong>有用的属性</strong>：添加有助于排查故障的属性，如用户 ID 或功能开关（feature flags）</li>
+<li><strong>性能意识</strong>：警惕过度创建跨度（span）带来的开销</li>
+</ul>
+
+<h3>应避免的追踪（Tracing）反模式</h3>
+
+<ul>
+<li><strong>过度埋点（Over-instrumentation）</strong>：创建过多跨度（span）会引发性能问题</li>
+<li><strong>缺失上下文</strong>：未能传播上下文会破坏跨服务边界的追踪（trace）</li>
+<li><strong>不一致的命名</strong>：使用不同的命名标准会让追踪（trace）更难解读</li>
+<li><strong>过多数据</strong>：在跨度（span）中放入大负载会压垮你的追踪（tracing）后端</li>
+<li><strong>忽略第三方服务</strong>：缺少对外部调用的跨度（span）会造成盲区</li>
+</ul>
+
+<p>想了解可观测性（Observability）在提升大语言模型（LLM）性能与可靠性方面扮演的关键角色，请探索：LLM Observability。</p>
+
+<h2>追踪（Trace）与跨度（Span）的业务价值：超越技术收益</h2>
+
+<p>追踪（trace）不只是用于排查故障——它们也能提供业务洞见：</p>
+
+<ul>
+<li>端到端地追踪关键的用户旅程</li>
+<li>衡量关键业务操作的性能</li>
+<li>基于追踪（trace）数据设定 SLO（Service Level Objectives，服务水平目标）</li>
+<li>用真实用户的语言量化性能问题的成本</li>
+<li>通过向跨度（span）添加相关属性来创造业务上下文</li>
+</ul>
+
+<p>当你能展示技术改进如何影响用户体验与业务指标时，你就弥合了 DevOps 与业务干系人之间的鸿沟。</p>
+
+<h2>结论</h2>
+
+<p>追踪（trace）与跨度（span）给了你透视分布式系统的 X 光视觉。它们揭示服务之间隐藏的连接、精准定位性能瓶颈，并大幅加速调试。</p>
+
+<p>随着系统愈发复杂，这类可观测性（Observability）不是奢侈品——它是必需品。</p>
+
+<p>如果你想继续探讨分布式追踪（tracing）与可观测性（Observability），欢迎加入我们的 Discord 社区，那里有 DevOps 从业者分享他们的经验与最佳实践！</p>
+
+<h2>常见问题</h2>
+
+<p><strong>追踪（tracing）与日志记录（logging）有什么区别？</strong><br>
+日志记录（logging）捕捉离散的事件，而追踪（tracing）展示跨服务的操作之间的关系。日志告诉你发生了什么；追踪（trace）告诉你它是如何发生的。</p>
+
+<p><strong>加入追踪（tracing）会拖慢我的应用吗？</strong><br>
+现代追踪（tracing）库增加的开销极小——在配置得当的情况下，通常性能影响低于 3%。配合采样（sampling），你还能进一步降低这个影响。</p>
+
+<p><strong>我需要修改全部代码才能加入追踪（tracing）吗？</strong><br>
+不一定。许多框架提供自动埋点（automatic instrumentation），只需极少的代码改动就能加入追踪（tracing）。OpenTelemetry 为大多数语言中的流行框架提供了自动埋点（auto-instrumentation）。</p>
+
+<p><strong>分布式追踪（tracing）会产生多少数据？</strong><br>
+这因流量、采样率与跨度（span）细节而有很大差异。对于繁忙的系统，每天从 GB 到 TB 级别都有可能。这就是为什么选择正确的可观测性（Observability）平台对成本控制很重要。</p>
+
+<p><strong>追踪（trace）能帮助安全与合规吗？</strong><br>
+能！追踪（trace）为请求流经你的系统创建了审计轨迹。借助恰当的属性，你可以追踪哪些用户或服务在何时访问了哪些数据。</p>
+
+<p><strong>追踪（trace）与跨度（span）如何与其他可观测性（Observability）信号配合？</strong><br>
+追踪（trace）补充指标（metrics）与日志（logs）。指标（metrics）从高层展示系统健康度，日志（logs）提供详细事件，而追踪（trace）则把点连起来，展示跨服务的请求流。</p>
+
+<h2>关于作者</h2>
+
+<p><strong>Anjali Udasi</strong> —— 致力于让技术少一点令人生畏。</p>
+
+</body></html>

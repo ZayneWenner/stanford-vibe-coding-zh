@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>Warp 与 Oz 入门指南（Warp 智能体式开发环境）</title><style>body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;max-width:860px;margin:auto;padding:24px;line-height:1.8;color:#1a1a1a}h1,h2,h3{border-bottom:1px solid #eee;padding-bottom:6px}pre,code{background:#f6f8fa;padding:2px 6px;border-radius:4px;font-family:ui-monospace,Consolas,monospace;overflow-x:auto}pre{padding:16px}blockquote{border-left:4px solid #ccc;margin:0;padding:0 16px;color:#555}a{color:#0366d6}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ddd;padding:8px}</style></head><body>
+<p><em>来源：https://www.warp.dev/university/getting-started/warp-vs-claude-code ｜ 机器翻译+人工校对稿，术语以 glossary.md 为准。</em></p>
+
+<h1>Warp 与 Oz 入门</h1>
+<p>开始使用 Warp（智能体式开发环境，Agentic Development Environment）与 Oz（面向云端智能体的编排平台）。</p>
+
+<p>Warp 是一个<strong>智能体式开发环境</strong>——它将现代化的终端与强大的智能体（Agent）相结合，帮助你构建、测试、部署并调试代码。Warp 的 AI 能力由 Oz 驱动，后者是面向云端智能体的编排平台。</p>
+
+<p>Warp 将现代化的终端与 Oz（面向云端智能体的编排平台）结合在一起。</p>
+
+<h2>Warp</h2>
+<p>Warp 是你的工作所在——一个为与智能体协作编程而打造的快速、现代化终端。</p>
+<p><strong>核心能力：</strong></p>
+<ul>
+  <li><strong>智能体形态（Agent Modality）</strong>：在用于执行命令的简洁终端视图，与用于多轮智能体工作流的专用对话视图之间自由切换。</li>
+  <li><strong>现代化终端体验</strong>：光标移动、基于区块的导航、多行编辑、语法高亮以及丰富的自动补全。底层使用 Rust 编写，性能出色。</li>
+  <li><strong>代码编辑器</strong>：文件树、支持 LSP 的代码编辑器，以及交互式代码审查体验。</li>
+  <li><strong>编程智能体集成</strong>：提供语音输入、<code>@</code> 选择（用于与基于终端的镜像协作）等功能。兼容 Oz，也可对接 Claude Code、Codex 等智能体。</li>
+</ul>
+
+<h2>深入探索 Warp 的核心功能</h2>
+
+<h2>Oz：面向云端智能体的编排平台</h2>
+<p>Oz 是面向云端智能体的编排平台，为 Warp 的全部智能特性提供支撑。Oz 旨在大规模地协调智能体——理解你的代码仓库、自主执行任务，并适配你的工作流。Oz 在设计上采用多模型架构，让你可以灵活地为每个任务挑选最合适的大语言模型（LLM）。</p>
+<p>Oz 以两种模式运行：</p>
+
+<h3>本地智能体</h3>
+<p>直接在 Warp 应用中运行，提供实时的交互式编程辅助。</p>
+<ul>
+  <li>在代码仓库范围内编写与重构代码</li>
+  <li>排查问题并修复错误</li>
+  <li>运行命令并解读结果</li>
+  <li>规划并执行多步骤任务</li>
+</ul>
+<p>本地智能体让你始终掌控全局。你可以审阅改动、在任务进行中引导智能体，并在动作执行前进行审批。</p>
+<p>→ 开始使用本地智能体</p>
+
+<h3>云端智能体</h3>
+<p>Oz 云端智能体在 Warp 的基础设施（或你自己的基础设施）上于后台运行，实现大规模的自动化。</p>
+<ul>
+  <li><strong>触发器（Triggers）</strong>：对来自 Slack、Linear、GitHub 或自定义 Webhook 的事件作出响应。</li>
+  <li><strong>定时任务（Schedules）</strong>：运行周期性任务，例如依赖更新或死代码清理。</li>
+  <li><strong>并行能力（Parallelism）</strong>：跨越多个代码仓库或任务并发运行大量智能体。</li>
+  <li><strong>可观测性（Observability）</strong>：每一次运行都被追踪、可审计，并可与团队共享。</li>
+</ul>
+<p>云端智能体非常适合那些不需要你立即关注的工作，例如拉取请求（PR）审查、问题分诊、日常维护，以及由集成驱动的工作流。</p>
+<p>→ 了解更多关于云端智能体的内容</p>
+
+<h2>它们如何协同工作</h2>
+<p>Warp 与 Oz 在本地与云端开发之间提供统一的体验：</p>
+<ul>
+  <li><strong>同一套智能体，无处不在</strong>：无论你是在 Warp 中交互式地工作，还是在云端运行智能体，你使用的都是同一套底层智能体能力。</li>
+  <li><strong>无缝交接</strong>：在云端启动任务，当你需要亲自动手控制时，可在 Warp 中无缝接管本地执行，而不会丢失进度或上下文。</li>
+  <li><strong>共享上下文</strong>：Warp Drive、Rules 与 MCP 服务器在本地与云端智能体之间通用，因此团队的知识与工具始终可用。</li>
+  <li><strong>团队协作</strong>：共享智能体会话、审阅智能体的动作，并引导正在运行的任务——无论任务最初由谁发起。</li>
+</ul>
+
+<h2>多模型支持</h2>
+<p>Oz 在设计上采用多模型架构。你可以从一组精选的顶尖模型中，选择自己偏好的大语言模型（LLM）。</p>
+
+<h2>隐私与安全</h2>
+<p>Warp 符合 SOC 2 合规要求，并与所有签约的大语言模型（LLM）供应商执行<strong>零数据保留（Zero Data Retention）</strong>策略。客户的 AI 数据不会被保留、存储，也不会被用于模型训练。</p>
+<p>Warp 的 AI 功能可在「设置 &gt; AI」中全局关闭。</p>
+<p>→ 阅读更多关于数据隐私的内容</p>
+
+<h2>后续步骤</h2>
+<ul>
+  <li><strong>快速上手指南</strong>：安装 Warp 并开始编程。</li>
+  <li><strong>本地智能体概览</strong>：探索 Warp 中可用的全部 AI 功能。</li>
+  <li><strong>云端智能体概览</strong>：配置后台自动化。</li>
+  <li><strong>Oz 平台</strong>：了解 CLI、API、SDK 与基础设施。</li>
+</ul>
+
+<p><em>最后更新于 3 天前。</em></p>
+</body></html>

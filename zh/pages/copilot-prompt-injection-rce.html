@@ -1,0 +1,158 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>GitHub Copilot：通过提示注入实现的远程代码执行（CVE-2025-53773）</title><style>body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;max-width:860px;margin:auto;padding:24px;line-height:1.8;color:#1a1a1a}h1,h2,h3{border-bottom:1px solid #eee;padding-bottom:6px}pre,code{background:#f6f8fa;padding:2px 6px;border-radius:4px;font-family:ui-monospace,Consolas,monospace;overflow-x:auto}pre{padding:16px}blockquote{border-left:4px solid #ccc;margin:0;padding:0 16px;color:#555}a{color:#0366d6}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ddd;padding:8px}</style></head><body>
+
+<p><em>来源：https://embracethered.com/blog/posts/2025/github-copilot-remote-code-execution-via-prompt-injection/ ｜ 机器翻译+人工校对稿，术语以 glossary.md 为准。</em></p>
+
+<h1>GitHub Copilot：通过提示注入实现的远程代码执行（CVE-2025-53773）</h1>
+
+<p class="post-meta">发布于 2025 年 8 月 12 日 ｜ 标签：#llm #agents #month of ai bugs</p>
+
+<p>这篇文章是关于一个重要但也令人不安的<strong>提示注入（Prompt Injection）</strong> 发现，它会导致开发者机器在 <a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-53773">GitHub Copilot 和 VS Code</a> 中被完全攻陷。</p>
+
+<p><strong>它的实现方式是：通过修改项目的 <code>settings.json</code> 文件，将 Copilot 置入 YOLO 模式。</strong></p>
+
+<p><a href="/blog/images/2025/episode12-yt.png"><img src="/blog/images/2025/episode12-yt.png" alt="vscode episode 18" /></a></p>
+
+<p>正如几天前在 <a href="/blog/posts/2025/amp-agents-that-modify-system-configuration-and-escape/">Amp</a> 一文中所述，智能体（agents）中一个可能被忽视的漏洞模式是：如果一个智能体能够写入文件并修改自身的配置，或更新与安全相关的设置，就可能导致<strong>远程代码执行（RCE）</strong>。这并不罕见，也是在进行安全审查时始终需要留意的一个领域。</p>
+
+<h2>背景研究</h2>
+
+<p>在研究 VS Code 和 GitHub Copilot 的 Agent 模式时，我注意到一个奇怪的行为……它可以在不经过用户批准的情况下，在工作区中创建并写入文件。</p>
+
+<p>这些编辑会立即持久化，它们不是以可供审查的内存中 diff 形式存在。这些修改会立刻写入磁盘。</p>
+
+<p><a href="/blog/images/2025/agents-that-can.png"><img src="/blog/images/2025/agents-that-can.png" alt="vscode agents that can modify their own settings" /></a></p>
+
+<p>作为红队成员，你会本能地知道这类事情大概不妙……于是我研究它是否可被用来提权并执行代码。</p>
+
+<h3><strong>YOLO 模式</strong></h3>
+
+<p>于是，接下来我研究了 VS Code 中那些依赖于项目/工作区文件夹内设置的功能，并很快找到了一个有趣的。</p>
+
+<p><a href="/blog/images/2025/vscode-documentation-settings-json.png"><img src="/blog/images/2025/vscode-documentation-settings-json.png" alt="vscode-exp-yolo-mode" /></a></p>
+
+<p>结果发现，在 <code>.vscode/settings.json</code> 文件中可以添加如下一行：</p>
+
+<p><code>"chat.tools.autoApprove": true</code></p>
+
+<p><strong>这将把 GitHub Copilot 置于 YOLO 模式。</strong></p>
+
+<p>它会禁用所有用户确认，然后我们就可以运行 shell 命令、浏览网页，以及更多！</p>
+
+<p>有趣的是，这是一个实验性功能，但它默认仍然存在。我并没有下载特殊版本，也没有把我的 VS Code 整体切换到实验模式。</p>
+
+<p>此外，它在 Windows、macOS 以及 Linux 上都能工作。</p>
+
+<h2>漏洞利用链详解</h2>
+
+<p>劫持 Copilot 并提权的概念验证（PoC）漏洞利用链如下：</p>
+
+<ol>
+<li>攻击始于植入在源代码文件、网页、GitHub issue、工具调用响应或其他内容中的提示注入……该 payload 也可以使用不可见文本作为指令。</li>
+<li>提示注入首先向 <code>~/.vscode/settings.json</code> 文件添加一行 <strong>&ldquo;chat.tools.autoApprove&rdquo;: true</strong>。如果文件夹和文件尚不存在，则会被创建。</li>
+<li><strong>GitHub Copilot 立即进入 YOLO 模式！</strong></li>
+<li>攻击运行一条 Terminal 命令。<strong>并且通过条件式提示注入，我们确实可以基于操作系统来定向运行什么。</strong></li>
+<li>我们实现了由提示注入驱动的远程代码执行。</li>
+</ol>
+
+<p>下面这张截图展示了带有提示注入的演示文件、右侧聊天框中正在与该文件交互的开发者，以及弹出的计算器！</p>
+
+<p><a href="/blog/images/2025/copilot-chat-result.png"><img src="/blog/images/2025/copilot-chat-result.png" alt="vscode-e2e-calc" /></a></p>
+
+<p>当然，任何其它形式的提示注入投递方式，比如来自 MCP 服务器的网页或返回数据，都是攻击角度。我之所以把它放在源代码文件里，只是因为最容易测试。</p>
+
+<h2>视频演示</h2>
+
+<h3>简短演示</h3>
+
+<p>下面是展示 Windows 上代码执行的演示视频。</p>
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/QceCWM6DbWc?autoplay=0&amp;controls=1&amp;end=0&amp;loop=0&amp;mute=0&amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video"></iframe>
+</div>
+
+<p>以及 macOS 上的这一段：</p>
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/IRMbO1l9AK0?autoplay=0&amp;controls=1&amp;end=0&amp;loop=0&amp;mute=0&amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video"></iframe>
+</div>
+
+<h3>详细讲解</h3>
+
+<p>下面是一段更长的视频，详细解释这一发现与漏洞利用：</p>
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/8Qzqgqxp5ho?autoplay=0&amp;controls=1&amp;end=0&amp;loop=0&amp;mute=0&amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video"></iframe>
+</div>
+
+<p><strong>能够自行设定权限和配置设置的 AI 真是疯狂！</strong></p>
+
+<h2>将工作站接入僵尸网络——ZombAIs</h2>
+
+<p>当然，这意味着我们可以把开发者的机器作为 <strong>ZombAI</strong> 接入僵尸网络。</p>
+
+<p>另外，出于好玩，我们修改了 <code>settings.json</code> 文件，把 VS Code 切换成 <code>Red</code> 配色方案之类的。</p>
+
+<p>但这还远未结束！这还意味着我们可以构建一个真正的 AI 病毒，它附着在文件上，并随着开发者下载和交互受感染的文件而传播。</p>
+
+<p>最后但同样重要的是，为了证明我们完全控制了开发者的主机，我们展示了 Copilot 可以被劫持去下载恶意软件，并接入一个远程命令与控制（C2）服务器。</p>
+
+<p><a href="/blog/images/2025/github-agent-e2e-zombai.png"><img src="/blog/images/2025/github-agent-e2e-zombai.png" alt="vscode-zombai-deployment" /></a></p>
+
+<p>这意味着恶意软件、勒索软件、信息窃取器等的大门已经敞开。</p>
+
+<p>可怕的东西。</p>
+
+<h2>构建一个 AI 病毒</h2>
+
+<p>看到这一点，有人会注意到这基本上允许创建一个病毒。攻击者可以嵌入指令，一旦获得代码执行，额外的恶意软件就能攻陷其它 Git 项目（以及 RAG 来源），嵌入恶意指令，并提交这些更改，甚至强制推送到上游。</p>
+
+<p>随着其他开发者在不知情的情况下传播受感染的代码，这会导致进一步扩散。</p>
+
+<p><strong>最后，我们还需要谈谈不可见指令！</strong></p>
+
+<h2>使用不可见指令</h2>
+
+<p>有人可能会说，如果指令作为注释嵌入，会很快被发现。所以为了让它更有意思一点，我创建了一个不可见的 payload 来实现这个攻击链，但对用户不可见。虽然这没那么稳定，但还是成功了：</p>
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" loading="eager" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/iqW3eL8RpQc?autoplay=0&amp;controls=1&amp;end=0&amp;loop=0&amp;mute=0&amp;start=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" title="YouTube video"></iframe>
+</div>
+
+<p><strong>注意：</strong>尽管这里用不可见指令的演示对我多次奏效，但使用不可见指令常常导致漏洞利用非常不可靠，并且通常也会被模型拒绝；而且 VS Code 通常会显示一个关于 Unicode 字符的视觉提示标记。不过，攻击（和模型）会随着时间变得更好。同样值得强调的是，并非所有模型都易受此类不可见提示注入攻击。</p>
+
+<h2>建议与修复</h2>
+
+<p>实际上，比我分享的 YOLO 模式示例更多的攻击角度存在。当微软问我是否还有更多信息时，我又多看了一点，注意到还有其它有问题的地方，例如 AI 可以写入的 <code>.vscode/tasks.json</code>，或添加伪造的恶意 MCP 服务器等，这些都可能导致代码执行。而且 AI 可以重新配置项目的用户界面和配置设置。</p>
+
+<p><strong>最近我注意到开发者经常使用多个智能体，因此也存在覆盖其它智能体配置文件（允许列表中的 bash 命令、添加 MCP 服务器……）的威胁，因为它们通常也位于项目文件夹中。</strong></p>
+
+<p>理想情况下，AI 不应能在没有人类先批准的情况下修改文件。许多其它编辑器确实会显示 diff，然后由开发者批准。</p>
+
+<h2>负责任的披露</h2>
+
+<p>在 2025 年 6 月 29 日报告该漏洞后，微软确认了复现，并问了几个后续问题。几周后，MSRC 指出这是他们已经在跟踪的问题，并将在 8 月前修补。随着 8 月补丁星期二的发布，此问题现已修复。</p>
+
+<p>向来自 <a href="https://persistent-security.net/">Persistent Security</a> 的 <a href="https://x.com/marver">Markus Vervier</a> 致敬，他也识别并向微软报告了此漏洞。你可以在<a href="https://www.persistent-security.net/post/part-iii-vscode-copilot-wormable-command-execution-via-prompt-injection">这里</a> 找到他们的分析文章。同时也要向似乎也并行发现它的 <a href="https://x.com/Ari_MaccariTA">Ari Marzuk</a> 致敬。</p>
+
+<p>感谢 MSRC 和产品团队在缓解此问题中提供的帮助。</p>
+
+<h2>结论</h2>
+
+<p>这是 AI 智能体可能不安分守己的又一个例子！通过修改自身环境，GitHub Copilot 可以提权并执行代码，从而攻陷开发者的机器。正如我所发现的，这是智能体系统中一个并不少见的缺陷设计。</p>
+
+<p>继续留意此类设计缺陷，它们本应在威胁建模时就能轻易被发现。</p>
+
+<p>干杯。</p>
+
+<h2>参考</h2>
+
+<ul>
+<li><a href="https://monthofaibugs.com">Month of AI Bugs 2025</a></li>
+<li><a href="/blog/posts/2025/amp-agents-that-modify-system-configuration-and-escape/">Amp Code：通过提示注入实现的任意命令执行已修复</a></li>
+<li><a href="https://code.visualstudio.com/docs/copilot/reference/copilot-settings">Copilot 设置</a></li>
+<li><a href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-53773">CVE-2025-53773：GitHub Copilot 与 Visual Studio 远程代码执行漏洞</a></li>
+<li><a href="https://www.persistent-security.net/post/part-iii-vscode-copilot-wormable-command-execution-via-prompt-injection">Persistent Security 分析文章</a></li>
+<li><a href="https://persistent-security.net/">Persistent Security</a></li>
+</ul>
+
+</body></html>

@@ -1,0 +1,544 @@
+
+
+===== FILE: warp-vs-claude-code.html =====
+
+hidden="">
+>
+data-gb-announcement-banner="true" class="theme-bold:bg-header-background pt-4 pb-2" data-nosnippet="">
+class="transition-all duration-300 motion-reduce:transition-none lg:chat-open:pr-80 xl:chat-open:pr-96">
+class="relative px-4 pl-[max(env(safe-area-inset-left),1rem)] pr-[max(env(safe-area-inset-right),1rem)] sm:px-6 sm:pl-[max(env(safe-area-inset-left),1.5rem)] sm:pr-[max(env(safe-area-inset-right),1.5rem)] md:px-8 md:pl-[max(env(safe-area-inset-left),2rem)] md:pr-[max(env(safe-area-inset-right),2rem)] max-w-screen-2xl mx-auto">
+>Introducing Oz: the orchestration platform for cloud agents.
+class="underline decoration-[max(0.07em,1px)] underline-offset-2 links-accent:underline-offset-4 links-default:decoration-primary/6 links-default:text-primary-subtle hover:links-default:text-primary-strong contrast-more:links-default:text-primary contrast-more:hover:links-default:text-primary-strong links-accent:decoration-primary-subtle hover:links-accent:decoration-[3px] hover:links-accent:[text-decoration-skip-ink:none] transition-all duration-100 ml-1 inline"> Learn more.
+>
+>
+>
+>
+>
+class="site-header:theme-bold:bg-header-background site-header:theme-bold:shadow-[0px_1px_0px] site-header:theme-bold:shadow-tint-12/2">
+class="transition-all duration-300 motion-reduce:transition-none lg:chat-open:pr-80 xl:chat-open:pr-96">
+data-gb-header-content="true" class="gap-4 lg:gap-6 flex items-center justify-between w-full py-3 min-h-16 sm:h-16 px-4 pl-[max(env(safe-area-inset-left),1rem)] pr-[max(env(safe-area-inset-right),1rem)] sm:px-6 sm:pl-[max(env(safe-area-inset-left),1.5rem)] sm:pr-[max(env(safe-area-inset-right),1.5rem)] md:px-8 md:pl-[max(env(safe-area-inset-left),2rem)] md:pr-[max(env(safe-area-inset-right),2rem)] max-w-screen-2xl mx-auto transition-[max-width] duration-300 motion-reduce:transition-none @container/header">
+class="flex max-w-full min-w-0 shrink items-center justify-start gap-2 lg:gap-4 lg:@2xl:basis-72">
+class="text-pretty line-clamp-2 tracking-tight max-w-[18ch] lg:max-w-[24ch] font-semibold ms-3 text-base/tight lg:text-lg/tight text-tint-strong theme-bold:text-header-link">Warp
+>
+>
+class="flex grow-0 shrink-0 @2xl:basis-56 justify-self-end items-center gap-2 transition-[margin] duration-300 motion-reduce:transition-none @2xl:grow-[0.8] @4xl:basis-40 @2xl:max-w-[50%] @4xl:max-w-lg lg:@2xl:ml-[max(calc((100%-18rem-48rem)/2),1.5rem)] not-chat-open:xl:ml-[max(calc((100%-18rem-48rem-14rem-3rem)/2),1.5rem)] @2xl:mr-auto order-last @2xl:order-[unset]">
+class="relative flex @max-2xl:size-9.5 grow">
+class="group/input relative flex min-h-min overflow-hidden border border-tint bg-tint-base align-middle shadow-tint/6 ring-primary-hover transition-all dark:shadow-tint-1 depth-subtle:focus-within:-translate-y-px depth-subtle:hover:-translate-y-px depth-subtle:shadow-xs focus-within:border-primary-hover focus-within:depth-subtle:shadow-lg focus-within:shadow-primary-subtle focus-within:ring-2 hover:cursor-text hover:border-tint-hover hover:not-focus-within:bg-tint-subtle depth-subtle:hover:not-focus-within:shadow-md focus-within:hover:border-primary-hover flex-row px-3 py-2 gap-2 circular-corners:rounded-3xl rounded-corners:rounded-xl @max-2xl:absolute inset-y-0 right-0 z-30 @max-2xl:max-w-9.5 grow site-header:theme-bold:border-header-link/4 site-header:theme-bold:bg-header-link/1 @max-2xl:px-2.5 site-header:theme-bold:text-header-link site-header:theme-bold:shadow-none! site-header:theme-bold:backdrop-blur-xl @max-2xl:focus-within:w-56 @max-2xl:focus-within:max-w-[calc(100vw-5rem)] site-header:theme-bold:focus-within:border-header-link/6 site-header:theme-bold:focus-within:ring-header-link/5 site-header:theme-bold:hover:border-header-link/5 site-header:theme-bold:hover:not-focus-within:bg-header-link/2 @max-2xl:has-[input[aria-expanded=true]]:w-56 @max-2xl:has-[input[aria-expanded=true]]:max-w-[calc(100vw-5rem)] @max-2xl:[&_input]:opacity-0 site-header:theme-bold:[&_input]:placeholder:text-header-link/8 @max-2xl:focus-within:[&_input]:opacity-11 @max-2xl:has-[input[aria-expanded=true]]:[&_input]:opacity-11">
+class="flex shrink grow gap-2 items-center">
+class="flex items-center text-tint">
+>
+class="">
+class="shortcut hidden justify-end gap-0.5 whitespace-nowrap text-tint text-xs [font-feature-settings:"calt","case"] contrast-more:text-tint-strong md:flex"> ⌘ Ctrl k
+>
+>
+>
+class="flex items-center gap-2 empty:hidden -my-1 -mr-1.5">
+>
+>
+>
+>
+>
+>
+>
+class="transition-[padding] duration-300 motion-reduce:transition-none lg:chat-open:pr-80 xl:chat-open:pr-96">
+class="group/scroll-container relative flex shrink min-w-0 grow md:-ml-8 -ml-4 sm:-ml-6 md:-mr-8 -mr-4 sm:-mr-6">
+class="flex flex-1 overflow-hidden min-w-0 no-scrollbar overflow-x-scroll">
+style="position:relative">
+id="sitesc_m26wK"> Terminal
+>
+id="sitesc_6UbA2"> Agents
+>
+id="sitesc_goQJb"> Reference
+>
+id="sitesc_ehhlG"> Changelog
+>
+id="sitesc_eAuCw"> Support & Community
+>
+id="sitesc_DdXfw"> Enterprise
+>
+id="sitesc_Nckey"> University
+>
+>
+>
+>
+class="absolute top-full left-0 z-20 flex w-full" style="padding:0 16px 0 16px">
+>
+>
+class="pointer-events-none fixed inset-x-0 top-0 z-50 h-0.5 overflow-hidden hidden animate-fade-out-slow">
+class="h-full w-full origin-left animate-crawl bg-primary-solid theme-bold:bg-header-link">
+>
+>
+class="transition-all duration-300 motion-reduce:transition-none lg:chat-open:mr-80 xl:chat-open:mr-96">
+class="flex flex-col lg:flex-row lg:justify-center px-4 pl-[max(env(safe-area-inset-left),1rem)] pr-[max(env(safe-area-inset-right),1rem)] sm:px-6 sm:pl-[max(env(safe-area-inset-left),1.5rem)] sm:pr-[max(env(safe-area-inset-right),1.5rem)] md:px-8 md:pl-[max(env(safe-area-inset-left),2rem)] md:pr-[max(env(safe-area-inset-right),2rem)] max-w-screen-2xl mx-auto site-width-wide:max-w-screen-4xl transition-[max-width] duration-300 motion-reduce:transition-none site-header:min-h-[calc(100vh-64px)] site-header-sections:min-h-[calc(100vh-108px)]">
+data-gb-side-sheet-overlay="true" class="fixed inset-0 z-40 items-start bg-tint-base/3 not-hydrated:opacity-0 starting:opacity-0 starting:backdrop-blur-none transition-[opacity,display,backdrop-filter] transition-discrete duration-250 dark:bg-tint-base/6 hidden opacity-0 backdrop-blur-none">
+>
+class="pr-4 flex lg:hidden grow-0 dark:shadow-light/1 text-base/tight items-center site-header:theme-bold:bg-header-background site-header:theme-bold:m-[-1.5rem_-1px_-0.5rem_-2rem] site-header:theme-bold:p-[1rem_0_1rem_2rem]">
+class="text-pretty line-clamp-2 tracking-tight max-w-[18ch] lg:max-w-[24ch] font-semibold ms-3 text-base/tight lg:text-lg/tight text-tint-strong theme-bold:text-header-link">Warp
+>
+>
+class="-ms-5 relative flex min-h-0 grow flex-col border-tint-subtle sidebar-filled:bg-tint-subtle theme-muted:bg-tint-subtle [html.sidebar-filled.theme-muted_&]:bg-tint-base [html.sidebar-filled.theme-bold.tint_&]:bg-tint-base [html.sidebar-filled.theme-gradient_&]:border max-lg:sidebar-filled:border page-no-toc:bg-transparent! page-no-toc:border-none! sidebar-filled:rounded-2xl straight-corners:rounded-none page-has-toc:[html.sidebar-filled.circular-corners_&]:rounded-4xl">
+class="group/scroll-container relative flex shrink grow min-h-0" data-testid="toc-scroll-container">
+class="flex-1 overflow-hidden min-h-0 hide-scrollbar overflow-y-auto flex flex-col p-2 gutter-stable">
+class="page-group-item flex flex-col">
+class="sticky z-1 flex items-center gap-3 px-3 font-semibold text-xs uppercase tracking-wide pb-3 -mb-1.5 mask-[linear-gradient(rgba(0,0,0,1)_70%,rgba(0,0,0,0))] bg-tint-base sidebar-filled:bg-tint-subtle theme-muted:bg-tint-subtle [html.sidebar-filled.theme-muted_&]:bg-tint-base [html.sidebar-filled.theme-bold.tint_&]:bg-tint-base lg:[html.sidebar-default.theme-gradient_&]:bg-gradient-primary lg:[html.sidebar-default.theme-gradient.tint_&]:bg-gradient-tint -mt-2 -top-2 rounded-t-2xl pt-2">Getting started
+>
+class="page-document-item flex flex-col [.page-group-item+&]:mt-4"> Getting started with Warp and Oz
+>
+class="page-document-item flex flex-col [.page-group-item+&]:mt-4"> Quickstart
+>
+class="page-document-item flex flex-col [.page-group-item+&]:mt-4"> Migrate to Warp
+>
+class="page-document-item flex flex-col [.page-group-item+&]:mt-4"> Supported shells
+>
+class="page-document-item flex flex-col [.page-group-item+&]:mt-4"> Keyboard shortcuts
+>
+>
+class="page-group-item flex flex-col">
+class="-top-4 sticky z-1 flex items-center gap-3 px-3 font-semibold text-xs uppercase tracking-wide mt-2 pt-4 pb-3 -mb-1.5 mask-[linear-gradient(rgba(0,0,0,1)_70%,rgba(0,0,0,0))] bg-tint-base sidebar-filled:bg-tint-subtle theme-muted:bg-tint-subtle [html.sidebar-filled.theme-muted_&]:bg-tint-base [html.sidebar-filled.theme-bold.tint_&]:bg-tint-base lg:[html.sidebar-default.theme-gradient_&]:bg-gradient-primary lg:[html.sidebar-default.theme-gradient.tint_&]:bg-gradient-tint">Terminal
+>
+class="page-document-item flex flex-col [.page-group-item+&]:mt-4"> Classic input
+>
+class="page-document-item flex flex-col [.page-group-item+&]:mt-4"> Blocks
+>
+class="page-document-item flex flex-col [.page-group-item+&]:mt-4"> Modern text editing
+>
+class="page-document-item flex flex-col [.page-group-item+&]:mt-4"> Command entry
+>
+class="page-document-item flex flex-col [.page-group-item+&]:mt-4"> Command completions
+>
+class="page-document-item flex flex-col [.page-group-item+&]:mt-4"> Session management
+>
+class="page-document-item flex flex-col [.page-group-item+&]:mt-4"> Window management
+>
+class="page-document-item flex flex-col [.page-group-item+&]:mt-4"> Terminal appearance
+>
+class="page-document-item flex flex-col [.page-group-item+&]:mt-4"> Warpify overview
+>
+class="page-document-item flex flex-col [.page-group-item+&]:mt-4"> More Features
+>
+class="page-document-item flex flex-col [.page-group-item+&]:mt-4"> Command Palette
+>
+class="page-document-item flex flex-col [.page-group-item+&]:mt-4"> Terminal comparisons
+>
+class="page-document-item flex flex-col [.page-group-item+&]:mt-4"> Terminal features
+>
+class="page-document-item flex flex-col [.page-group-item+&]:mt-4"> Terminal integrations
+>
+>
+class="page-group-item flex flex-col">
+class="-top-4 sticky z-1 flex items-center gap-3 px-3 font-semibold text-xs uppercase tracking-wide mt-2 pt-4 pb-3 -mb-1.5 mask-[linear-gradient(rgba(0,0,0,1)_70%,rgba(0,0,0,0))] bg-tint-base sidebar-filled:bg-tint-subtle theme-muted:bg-tint-subtle [html.sidebar-filled.theme-muted_&]:bg-tint-base [html.sidebar-filled.theme-bold.tint_&]:bg-tint-base lg:[html.sidebar-default.theme-gradient_&]:bg-gradient-primary lg:[html.sidebar-default.theme-gradient.tint_&]:bg-gradient-tint">Code
+>
+class="page-document-item flex flex-col [.page-group-item+&]:mt-4"> Code overview
+>
+class="page-document-item flex flex-col [.page-group-item+&]:mt-4"> Built-in code editor
+>
+class="page-document-item flex flex-col [.page-group-item+&]:mt-4"> Code Review panel
+>
+class="page-document-item flex flex-col [.page-group-item+&]:mt-4"> Git Worktrees
+>
+class="page-document-item flex flex-col [.page-group-item+&]:mt-4"> Feature support over SSH
+>
+>
+class="page-group-item flex flex-col">
+class="-top-4 sticky z-1 flex items-center gap-3 px-3 font-semibold text-xs uppercase tracking-wide mt-2 pt-4 pb-3 -mb-1.5 mask-[linear-gradient(rgba(0,0,0,1)_70%,rgba(0,0,0,0))] bg-tint-base sidebar-filled:bg-tint-subtle theme-muted:bg-tint-subtle [html.sidebar-filled.theme-muted_&]:bg-tint-base [html.sidebar-filled.theme-bold.tint_&]:bg-tint-base lg:[html.sidebar-default.theme-gradient_&]:bg-gradient-primary lg:[html.sidebar-default.theme-gradient.tint_&]:bg-gradient-tint">Knowledge and collaboration
+>
+class="page-document-item flex flex-col [.page-group-item+&]:mt-4"> Warp Drive overview
+>
+class="page-document-item flex flex-col [.page-group-item+&]:mt-4"> Team management
+>
+class="page-document-item flex flex-col [.page-group-item+&]:mt-4"> Team Admin Panel
+>
+class="page-document-item flex flex-col [.page-group-item+&]:mt-4"> Session sharing
+>
+>
+>
+> Powered by GitBook
+>
+class="contents">
+class="contents [--content-scroll-margin:calc(var(--spacing)*27)]">
+class="flex flex-col min-w-56 shrink-0 overflow-hidden w-full xl:max-2xl:rounded-corners:page-api-block:rounded-md xl:max-2xl:circular-corners:page-api-block:rounded-xl xl:max-2xl:page-api-block:border xl:max-2xl:page-api-block:border-tint xl:max-2xl:page-api-block:bg-tint/9 xl:max-2xl:page-api-block:backdrop-blur-lg xl:max-2xl:contrast-more:page-api-block:bg-tint xl:max-2xl:page-api-block:hover:shadow-lg xl:max-2xl:page-api-block:hover:shadow-tint-12/1 xl:max-2xl:dark:page-api-block:hover:shadow-tint-1/1 xl:max-2xl:page-api-block:not-hover:*:hidden">
+class="hidden xl:max-2xl:page-api-block:flex! text-xs tracking-wide font-semibold uppercase px-2 py-1.5 flex-row items-center gap-2"> On this page
+>
+class="flex shrink flex-col overflow-hidden">
+class="flex flex-col gap-3 border-tint-subtle border-t first:border-none sidebar-list-default:px-3 pt-5 first:pt-0 xl:max-2xl:page-api-block:p-5 empty:hidden">
+>
+>
+class="sticky bottom-0 z-10 mt-auto flex flex-col bg-tint-base theme-gradient-tint:bg-gradient-tint theme-gradient:bg-gradient-primary theme-muted:bg-tint-subtle [html.sidebar-filled.theme-bold.tint_&]:bg-tint-subtle border-tint-subtle xl:max-2xl:page-api-block:border-t xl:max-2xl:page-api-block:p-2 pt-4">
+class="flex items-center justify-end">
+>
+class="" data-visual-test="removed">
+>
+>
+>
+class="flex h-fit items-stretch justify-start overflow-hidden *:translate-y-0! *:shadow-none! [&>*:not(:first-child)]:border-l-0 [&>*:not(:first-child,:last-child)]:rounded-none! [&>*:not(:only-child):first-child]:rounded-r-none [&>*:not(:only-child):last-child]:rounded-l-none float-right ml-4 xl:max-2xl:page-api-block:mr-62 -my-1.5"> Copy
+>
+class="flex items-center gap-2"> Getting started
+>
+class="text-2xl @xs:text-3xl @lg:text-4xl leading-tight font-bold flex items-center gap-[.5em] grow text-pretty clear-right xs:clear-none">Getting started with Warp and Oz
+>
+class="text-lg text-tint clear-both">Get started with Warp, the Agentic Development Environment, and Oz, the orchestration platform for cloud agents.
+>
+class="flex flex-col [&>*+*]:mt-5 whitespace-pre-wrap">
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center mx-auto page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid page-api-block:ml-0 text-start self-start justify-start">Warp is an Agentic Development Environment , a modern terminal combined with powerful agents that help you build, test, deploy, and debug code. Warp's AI is powered by Oz , the orchestration platform for cloud agents.
+>
+class="mx-auto page-width-wide:mx-0 decoration-primary/6 max-w-3xl print:break-inside-avoid page-width-wide:max-w-full page-api-block:ml-0 flex w-full justify-center">
+class="flex flex-row gap-3">
+class="relative overflow-hidden">
+class="relative overflow-hidden after:block after:absolute after:-inset-0 after:pointer-events-none w-fit mx-auto">
+> Warp combines a modern terminal with Oz, the orchestration platform for cloud agents
+>
+>
+>
+id="warp" class="text-xl @xs:text-2xl @lg:text-3xl font-semibold heading pdf-heading flex items-baseline scroll-mt-(--content-scroll-margin) text-start self-start justify-start relative group/hash mx-auto page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid page-api-block:ml-0 column-first-of-type:pt-0 pt-[1em]" data-pdf-heading="true">
+class="relative hash grid grid-area-1-1 h-[1em] border-0 opacity-0 site-background rounded group-hover/hash:opacity-[0] group-focus/hash:opacity-[0] md:group-hover/hash:opacity-[1] md:group-focus/hash:opacity-[1] -ml-6 pr-2 [.flip-heading-hash_&]:order-last [.flip-heading-hash_&]:ml-1 [.flip-heading-hash_&]:pl-2">
+>
+class="flex-1 z-1 justify-self-start max-w-full break-words text-start self-start justify-start leading-tight">Warp
+>
+>
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center mx-auto page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid page-api-block:ml-0 text-start self-start justify-start">Warp is where you work — a fast, modern terminal built for coding with agents.
+>
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center mx-auto page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid page-api-block:ml-0 text-start self-start justify-start"> Key capabilities:
+>
+class="leading-normal flex items-start">
+class="text-base leading-normal mr-1 flex min-h-lh min-w-6 items-center justify-center text-tint">
+class="before:font-var before:content-(--pseudoBefore--content)" style="--pseudoBefore--content:'•';--font-family:Arial;font-size:min(1.5em, 24px);line-height:1">
+>
+>
+class="flex min-w-0 flex-1 flex-col space-y-2">
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid min-h-lh [h2]:pt-0 [h3]:pt-0 [h4]:pt-0 mx-0 text-start self-start justify-start"> Agent Modality : Switch between a clean terminal for commands and a dedicated conversation view for multi-turn agent workflows.
+>
+>
+>
+class="leading-normal flex items-start">
+class="text-base leading-normal mr-1 flex min-h-lh min-w-6 items-center justify-center text-tint">
+class="before:font-var before:content-(--pseudoBefore--content)" style="--pseudoBefore--content:'•';--font-family:Arial;font-size:min(1.5em, 24px);line-height:1">
+>
+>
+class="flex min-w-0 flex-1 flex-col space-y-2">
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid min-h-lh [h2]:pt-0 [h3]:pt-0 [h4]:pt-0 mx-0 text-start self-start justify-start"> Modern terminal UX : Cursor movement, block-based navigation, multi-line editing, syntax highlighting, and rich completions. Built with Rust for high performance.
+>
+>
+>
+class="leading-normal flex items-start">
+class="text-base leading-normal mr-1 flex min-h-lh min-w-6 items-center justify-center text-tint">
+class="before:font-var before:content-(--pseudoBefore--content)" style="--pseudoBefore--content:'•';--font-family:Arial;font-size:min(1.5em, 24px);line-height:1">
+>
+>
+class="flex min-w-0 flex-1 flex-col space-y-2">
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid min-h-lh [h2]:pt-0 [h3]:pt-0 [h4]:pt-0 mx-0 text-start self-start justify-start"> Code editor : File tree, code editor with LSP support, and interactive code review experience.
+>
+>
+>
+class="leading-normal flex items-start">
+class="text-base leading-normal mr-1 flex min-h-lh min-w-6 items-center justify-center text-tint">
+class="before:font-var before:content-(--pseudoBefore--content)" style="--pseudoBefore--content:'•';--font-family:Arial;font-size:min(1.5em, 24px);line-height:1">
+>
+>
+class="flex min-w-0 flex-1 flex-col space-y-2">
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid min-h-lh [h2]:pt-0 [h3]:pt-0 [h4]:pt-0 mx-0 text-start self-start justify-start"> Coding agent integrations : Features like voice input, and @-selection for working with terminal based images. Compatible with Oz or agents like Claude Code and Codex.
+>
+>
+>
+class="relative overflow-hidden after:block after:absolute after:-inset-0 rounded-corners:rounded-sm circular-corners:rounded-2xl after:border-tint-subtle after:border after:rounded circular-corners:after:rounded-2xl rounded-corners:after:rounded-sm dark:after:mix-blend-plus-lighter after:pointer-events-none mx-auto">
+data-visual-test="blackout">
+>
+style="left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.25%;">
+>
+>
+>
+> Deep dive into Warp's core features
+id="oz-the-orchestration-platform-for-cloud-agents" class="text-xl @xs:text-2xl @lg:text-3xl font-semibold heading pdf-heading flex items-baseline scroll-mt-(--content-scroll-margin) text-start self-start justify-start relative group/hash mx-auto page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid page-api-block:ml-0 column-first-of-type:pt-0 pt-[1em]" data-pdf-heading="true">
+class="relative hash grid grid-area-1-1 h-[1em] border-0 opacity-0 site-background rounded group-hover/hash:opacity-[0] group-focus/hash:opacity-[0] md:group-hover/hash:opacity-[1] md:group-focus/hash:opacity-[1] -ml-6 pr-2 [.flip-heading-hash_&]:order-last [.flip-heading-hash_&]:ml-1 [.flip-heading-hash_&]:pl-2">
+>
+class="flex-1 z-1 justify-self-start max-w-full break-words text-start self-start justify-start leading-tight">Oz: The orchestration platform for cloud agents
+>
+>
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center mx-auto page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid page-api-block:ml-0 text-start self-start justify-start">Oz is the orchestration platform for cloud agents that powers all of Warp's intelligent features. Oz is designed to coordinate agents at scale—understanding your codebase, executing tasks autonomously, and adapting to your workflows. Oz is multi-model by design, giving you flexibility to choose the best LLM for each task.
+>
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center mx-auto page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid page-api-block:ml-0 text-start self-start justify-start">Oz operates in two modes:
+>
+id="local-agents" class="text-lg @xs:text-xl @lg:text-2xl font-semibold heading pdf-heading flex items-baseline scroll-mt-(--content-scroll-margin) text-start self-start justify-start relative group/hash mx-auto page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid page-api-block:ml-0 column-first-of-type:pt-0 pt-[0.75em]" data-pdf-heading="true">
+class="relative hash grid grid-area-1-1 h-[1em] border-0 opacity-0 site-background rounded group-hover/hash:opacity-[0] group-focus/hash:opacity-[0] md:group-hover/hash:opacity-[1] md:group-focus/hash:opacity-[1] -ml-6 pr-2 [.flip-heading-hash_&]:order-last [.flip-heading-hash_&]:ml-1 [.flip-heading-hash_&]:pl-2">
+>
+class="flex-1 z-1 justify-self-start max-w-full break-words text-start self-start justify-start leading-snug">Local agents
+>
+>
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center mx-auto page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid page-api-block:ml-0 text-start self-start justify-start">Run directly in the Warp app for real-time, interactive coding assistance.
+>
+class="leading-normal flex items-start">
+class="text-base leading-normal mr-1 flex min-h-lh min-w-6 items-center justify-center text-tint">
+class="before:font-var before:content-(--pseudoBefore--content)" style="--pseudoBefore--content:'•';--font-family:Arial;font-size:min(1.5em, 24px);line-height:1">
+>
+>
+class="flex min-w-0 flex-1 flex-col space-y-2">
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid min-h-lh [h2]:pt-0 [h3]:pt-0 [h4]:pt-0 mx-0 text-start self-start justify-start">Write and refactor code across your codebase
+>
+>
+>
+class="leading-normal flex items-start">
+class="text-base leading-normal mr-1 flex min-h-lh min-w-6 items-center justify-center text-tint">
+class="before:font-var before:content-(--pseudoBefore--content)" style="--pseudoBefore--content:'•';--font-family:Arial;font-size:min(1.5em, 24px);line-height:1">
+>
+>
+class="flex min-w-0 flex-1 flex-col space-y-2">
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid min-h-lh [h2]:pt-0 [h3]:pt-0 [h4]:pt-0 mx-0 text-start self-start justify-start">Debug issues and fix errors
+>
+>
+>
+class="leading-normal flex items-start">
+class="text-base leading-normal mr-1 flex min-h-lh min-w-6 items-center justify-center text-tint">
+class="before:font-var before:content-(--pseudoBefore--content)" style="--pseudoBefore--content:'•';--font-family:Arial;font-size:min(1.5em, 24px);line-height:1">
+>
+>
+class="flex min-w-0 flex-1 flex-col space-y-2">
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid min-h-lh [h2]:pt-0 [h3]:pt-0 [h4]:pt-0 mx-0 text-start self-start justify-start">Run commands and interpret results
+>
+>
+>
+class="leading-normal flex items-start">
+class="text-base leading-normal mr-1 flex min-h-lh min-w-6 items-center justify-center text-tint">
+class="before:font-var before:content-(--pseudoBefore--content)" style="--pseudoBefore--content:'•';--font-family:Arial;font-size:min(1.5em, 24px);line-height:1">
+>
+>
+class="flex min-w-0 flex-1 flex-col space-y-2">
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid min-h-lh [h2]:pt-0 [h3]:pt-0 [h4]:pt-0 mx-0 text-start self-start justify-start">Plan and execute multi-step tasks
+>
+>
+>
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center mx-auto page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid page-api-block:ml-0 text-start self-start justify-start">Local agents keep you in control. You can review changes, steer the agent mid-task, and approve actions before they execute.
+>
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center mx-auto page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid page-api-block:ml-0 text-start self-start justify-start">→ Get started with local agents
+>
+id="cloud-agents" class="text-lg @xs:text-xl @lg:text-2xl font-semibold heading pdf-heading flex items-baseline scroll-mt-(--content-scroll-margin) text-start self-start justify-start relative group/hash mx-auto page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid page-api-block:ml-0 column-first-of-type:pt-0 pt-[0.75em]" data-pdf-heading="true">
+class="relative hash grid grid-area-1-1 h-[1em] border-0 opacity-0 site-background rounded group-hover/hash:opacity-[0] group-focus/hash:opacity-[0] md:group-hover/hash:opacity-[1] md:group-focus/hash:opacity-[1] -ml-6 pr-2 [.flip-heading-hash_&]:order-last [.flip-heading-hash_&]:ml-1 [.flip-heading-hash_&]:pl-2">
+>
+class="flex-1 z-1 justify-self-start max-w-full break-words text-start self-start justify-start leading-snug">Cloud agents
+>
+>
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center mx-auto page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid page-api-block:ml-0 text-start self-start justify-start">Oz Cloud Agents run in the background on Warp's infrastructure (or your own) for automation at scale.
+>
+class="leading-normal flex items-start">
+class="text-base leading-normal mr-1 flex min-h-lh min-w-6 items-center justify-center text-tint">
+class="before:font-var before:content-(--pseudoBefore--content)" style="--pseudoBefore--content:'•';--font-family:Arial;font-size:min(1.5em, 24px);line-height:1">
+>
+>
+class="flex min-w-0 flex-1 flex-col space-y-2">
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid min-h-lh [h2]:pt-0 [h3]:pt-0 [h4]:pt-0 mx-0 text-start self-start justify-start"> Triggers : React to events from Slack, Linear, GitHub, or custom webhooks
+>
+>
+>
+class="leading-normal flex items-start">
+class="text-base leading-normal mr-1 flex min-h-lh min-w-6 items-center justify-center text-tint">
+class="before:font-var before:content-(--pseudoBefore--content)" style="--pseudoBefore--content:'•';--font-family:Arial;font-size:min(1.5em, 24px);line-height:1">
+>
+>
+class="flex min-w-0 flex-1 flex-col space-y-2">
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid min-h-lh [h2]:pt-0 [h3]:pt-0 [h4]:pt-0 mx-0 text-start self-start justify-start"> Schedules : Run recurring tasks like dependency updates or dead code removal
+>
+>
+>
+class="leading-normal flex items-start">
+class="text-base leading-normal mr-1 flex min-h-lh min-w-6 items-center justify-center text-tint">
+class="before:font-var before:content-(--pseudoBefore--content)" style="--pseudoBefore--content:'•';--font-family:Arial;font-size:min(1.5em, 24px);line-height:1">
+>
+>
+class="flex min-w-0 flex-1 flex-col space-y-2">
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid min-h-lh [h2]:pt-0 [h3]:pt-0 [h4]:pt-0 mx-0 text-start self-start justify-start"> Parallelism : Run many agents concurrently across repos or tasks
+>
+>
+>
+class="leading-normal flex items-start">
+class="text-base leading-normal mr-1 flex min-h-lh min-w-6 items-center justify-center text-tint">
+class="before:font-var before:content-(--pseudoBefore--content)" style="--pseudoBefore--content:'•';--font-family:Arial;font-size:min(1.5em, 24px);line-height:1">
+>
+>
+class="flex min-w-0 flex-1 flex-col space-y-2">
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid min-h-lh [h2]:pt-0 [h3]:pt-0 [h4]:pt-0 mx-0 text-start self-start justify-start"> Observability : Every run is tracked, auditable, and shareable with your team
+>
+>
+>
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center mx-auto page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid page-api-block:ml-0 text-start self-start justify-start">Cloud agents are ideal for work that doesn't need your immediate attention, like PR reviews, issue triage, routine maintenance, and integration-driven workflows.
+>
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center mx-auto page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid page-api-block:ml-0 text-start self-start justify-start">→ Learn about cloud agents
+>
+id="how-they-work-together" class="text-xl @xs:text-2xl @lg:text-3xl font-semibold heading pdf-heading flex items-baseline scroll-mt-(--content-scroll-margin) text-start self-start justify-start relative group/hash mx-auto page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid page-api-block:ml-0 column-first-of-type:pt-0 pt-[1em]" data-pdf-heading="true">
+class="relative hash grid grid-area-1-1 h-[1em] border-0 opacity-0 site-background rounded group-hover/hash:opacity-[0] group-focus/hash:opacity-[0] md:group-hover/hash:opacity-[1] md:group-focus/hash:opacity-[1] -ml-6 pr-2 [.flip-heading-hash_&]:order-last [.flip-heading-hash_&]:ml-1 [.flip-heading-hash_&]:pl-2">
+>
+class="flex-1 z-1 justify-self-start max-w-full break-words text-start self-start justify-start leading-tight">How they work together
+>
+>
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center mx-auto page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid page-api-block:ml-0 text-start self-start justify-start">Warp and Oz provide a unified experience across local and cloud development:
+>
+class="leading-normal flex items-start">
+class="text-base leading-normal mr-1 flex min-h-lh min-w-6 items-center justify-center text-tint">
+class="before:font-var before:content-(--pseudoBefore--content)" style="--pseudoBefore--content:'•';--font-family:Arial;font-size:min(1.5em, 24px);line-height:1">
+>
+>
+class="flex min-w-0 flex-1 flex-col space-y-2">
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid min-h-lh [h2]:pt-0 [h3]:pt-0 [h4]:pt-0 mx-0 text-start self-start justify-start"> Same agent, anywhere : Whether you're working interactively in Warp or running agents in the cloud, you're using the same underlying agent capabilities.
+>
+>
+>
+class="leading-normal flex items-start">
+class="text-base leading-normal mr-1 flex min-h-lh min-w-6 items-center justify-center text-tint">
+class="before:font-var before:content-(--pseudoBefore--content)" style="--pseudoBefore--content:'•';--font-family:Arial;font-size:min(1.5em, 24px);line-height:1">
+>
+>
+class="flex min-w-0 flex-1 flex-col space-y-2">
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid min-h-lh [h2]:pt-0 [h3]:pt-0 [h4]:pt-0 mx-0 text-start self-start justify-start"> Seamless handoff : Start a task in the cloud and take over locally in Warp when you want hands-on control, without losing progress or context.
+>
+>
+>
+class="leading-normal flex items-start">
+class="text-base leading-normal mr-1 flex min-h-lh min-w-6 items-center justify-center text-tint">
+class="before:font-var before:content-(--pseudoBefore--content)" style="--pseudoBefore--content:'•';--font-family:Arial;font-size:min(1.5em, 24px);line-height:1">
+>
+>
+class="flex min-w-0 flex-1 flex-col space-y-2">
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid min-h-lh [h2]:pt-0 [h3]:pt-0 [h4]:pt-0 mx-0 text-start self-start justify-start"> Shared context : Warp Drive , Rules , and MCP servers work across both local and cloud agents, so your team's knowledge and tools are always available.
+>
+>
+>
+class="leading-normal flex items-start">
+class="text-base leading-normal mr-1 flex min-h-lh min-w-6 items-center justify-center text-tint">
+class="before:font-var before:content-(--pseudoBefore--content)" style="--pseudoBefore--content:'•';--font-family:Arial;font-size:min(1.5em, 24px);line-height:1">
+>
+>
+class="flex min-w-0 flex-1 flex-col space-y-2">
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid min-h-lh [h2]:pt-0 [h3]:pt-0 [h4]:pt-0 mx-0 text-start self-start justify-start"> Team collaboration : Share agent sessions, review agents' actions, and steer running tasks, regardless of who started them.
+>
+>
+>
+id="multi-model-support" class="text-xl @xs:text-2xl @lg:text-3xl font-semibold heading pdf-heading flex items-baseline scroll-mt-(--content-scroll-margin) text-start self-start justify-start relative group/hash mx-auto page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid page-api-block:ml-0 column-first-of-type:pt-0 pt-[1em]" data-pdf-heading="true">
+class="relative hash grid grid-area-1-1 h-[1em] border-0 opacity-0 site-background rounded group-hover/hash:opacity-[0] group-focus/hash:opacity-[0] md:group-hover/hash:opacity-[1] md:group-focus/hash:opacity-[1] -ml-6 pr-2 [.flip-heading-hash_&]:order-last [.flip-heading-hash_&]:ml-1 [.flip-heading-hash_&]:pl-2">
+>
+class="flex-1 z-1 justify-self-start max-w-full break-words text-start self-start justify-start leading-tight">Multi-model support
+>
+>
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center mx-auto page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid page-api-block:ml-0 text-start self-start justify-start">Oz is multi-model by design. You can choose your preferred LLM from a curated set of top models.
+>
+id="privacy-and-security" class="text-xl @xs:text-2xl @lg:text-3xl font-semibold heading pdf-heading flex items-baseline scroll-mt-(--content-scroll-margin) text-start self-start justify-start relative group/hash mx-auto page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid page-api-block:ml-0 column-first-of-type:pt-0 pt-[1em]" data-pdf-heading="true">
+class="relative hash grid grid-area-1-1 h-[1em] border-0 opacity-0 site-background rounded group-hover/hash:opacity-[0] group-focus/hash:opacity-[0] md:group-hover/hash:opacity-[1] md:group-focus/hash:opacity-[1] -ml-6 pr-2 [.flip-heading-hash_&]:order-last [.flip-heading-hash_&]:ml-1 [.flip-heading-hash_&]:pl-2">
+>
+class="flex-1 z-1 justify-self-start max-w-full break-words text-start self-start justify-start leading-tight">Privacy and security
+>
+>
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center mx-auto page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid page-api-block:ml-0 text-start self-start justify-start">Warp is SOC 2 compliant and has Zero Data Retention policies with all contracted LLM providers. No customer AI data is retained, stored, or used for training.
+>
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center mx-auto page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid page-api-block:ml-0 text-start self-start justify-start">Warp's AI features can be globally disabled in Settings > AI .
+>
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center mx-auto page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid page-api-block:ml-0 text-start self-start justify-start">→ Read more about data privacy
+>
+id="next-steps" class="text-xl @xs:text-2xl @lg:text-3xl font-semibold heading pdf-heading flex items-baseline scroll-mt-(--content-scroll-margin) text-start self-start justify-start relative group/hash mx-auto page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid page-api-block:ml-0 column-first-of-type:pt-0 pt-[1em]" data-pdf-heading="true">
+class="relative hash grid grid-area-1-1 h-[1em] border-0 opacity-0 site-background rounded group-hover/hash:opacity-[0] group-focus/hash:opacity-[0] md:group-hover/hash:opacity-[1] md:group-focus/hash:opacity-[1] -ml-6 pr-2 [.flip-heading-hash_&]:order-last [.flip-heading-hash_&]:ml-1 [.flip-heading-hash_&]:pl-2">
+>
+class="flex-1 z-1 justify-self-start max-w-full break-words text-start self-start justify-start leading-tight">Next steps
+>
+>
+class="leading-normal flex items-start">
+class="text-base leading-normal mr-1 flex min-h-lh min-w-6 items-center justify-center text-tint">
+class="before:font-var before:content-(--pseudoBefore--content)" style="--pseudoBefore--content:'•';--font-family:Arial;font-size:min(1.5em, 24px);line-height:1">
+>
+>
+class="flex min-w-0 flex-1 flex-col space-y-2">
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid min-h-lh [h2]:pt-0 [h3]:pt-0 [h4]:pt-0 mx-0 text-start self-start justify-start"> Quickstart Guide : Get Warp installed and start coding
+>
+>
+>
+class="leading-normal flex items-start">
+class="text-base leading-normal mr-1 flex min-h-lh min-w-6 items-center justify-center text-tint">
+class="before:font-var before:content-(--pseudoBefore--content)" style="--pseudoBefore--content:'•';--font-family:Arial;font-size:min(1.5em, 24px);line-height:1">
+>
+>
+class="flex min-w-0 flex-1 flex-col space-y-2">
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid min-h-lh [h2]:pt-0 [h3]:pt-0 [h4]:pt-0 mx-0 text-start self-start justify-start"> Local Agents Overview : Explore all AI features available in Warp
+>
+>
+>
+class="leading-normal flex items-start">
+class="text-base leading-normal mr-1 flex min-h-lh min-w-6 items-center justify-center text-tint">
+class="before:font-var before:content-(--pseudoBefore--content)" style="--pseudoBefore--content:'•';--font-family:Arial;font-size:min(1.5em, 24px);line-height:1">
+>
+>
+class="flex min-w-0 flex-1 flex-col space-y-2">
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid min-h-lh [h2]:pt-0 [h3]:pt-0 [h4]:pt-0 mx-0 text-start self-start justify-start"> Cloud Agents Overview : Set up background automation
+>
+>
+>
+class="leading-normal flex items-start">
+class="text-base leading-normal mr-1 flex min-h-lh min-w-6 items-center justify-center text-tint">
+class="before:font-var before:content-(--pseudoBefore--content)" style="--pseudoBefore--content:'•';--font-family:Arial;font-size:min(1.5em, 24px);line-height:1">
+>
+>
+class="flex min-w-0 flex-1 flex-col space-y-2">
+class="has-[.button,input]:flex has-[.button,input]:flex-wrap has-[.button,input]:gap-2 has-[.button,input]:items-center page-width-wide:mx-0 w-full decoration-primary/6 max-w-3xl print:break-inside-avoid min-h-lh [h2]:pt-0 [h3]:pt-0 [h4]:pt-0 mx-0 text-start self-start justify-start"> Oz Platform : Learn about the CLI, API, SDK, and infrastructure
+>
+>
+>
+>
+class="flex flex-col md:flex-row mt-6 gap-2 max-w-3xl page-width-wide:max-w-screen-2xl mx-auto text-tint"> Next Quickstart
+>
+class="mx-auto mt-6 page-api-block:ml-0 flex max-w-3xl page-full-width:max-w-screen-2xl flex-row flex-wrap items-center gap-4 text-tint contrast-more:text-tint-strong">
+class="mr-auto text-sm ">Last updated 3 days ago
+>
+class="flex flex-col gap-3 text-sm xl:hidden">
+class="flex flex-wrap items-center gap-2">
+>Was this helpful?
+>
+class="flex h-fit items-stretch justify-start overflow-hidden *:translate-y-0! *:shadow-none! [&>*:not(:first-child)]:border-l-0 [&>*:not(:first-child,:last-child)]:rounded-none! [&>*:not(:only-child):first-child]:rounded-r-none [&>*:not(:only-child):last-child]:rounded-l-none rounded-full border border-tint bg-tint-base">
+>
+>
+>
+>
+>
+>
+>
+>
+class="transition-[padding] duration-300 motion-reduce:transition-none lg:chat-open:pr-80 xl:chat-open:pr-96">
+class="sm:px-6 sm:pl-[max(env(safe-area-inset-left),1.5rem)] sm:pr-[max(env(safe-area-inset-right),1.5rem)] md:px-8 md:pl-[max(env(safe-area-inset-left),2rem)] md:pr-[max(env(safe-area-inset-right),2rem)] max-w-screen-2xl px-4 py-8 @4xl:py-12 mx-auto @container/footer">
+class="mx-auto flex @xs:grid @4xl:max-w-none! max-w-3xl site-width-wide:max-w-screen-2xl flex-col justify-between gap-12 grid-cols-[auto_auto] @4xl:grid-cols-[18rem_minmax(auto,48rem)_auto] @7xl:grid-cols-[18rem_minmax(auto,48rem)_14rem] @4xl:site-width-wide:grid-cols-[18rem_minmax(auto,80rem)_auto] @7xl:site-width-wide:grid-cols-[18rem_minmax(auto,80rem)_14rem] @4xl:page-no-toc:grid-cols-[minmax(auto,48rem)_auto] @7xl:page-no-toc:grid-cols-[14rem_minmax(auto,48rem)_14rem] @4xl:[body:has(.site-width-wide,.page-no-toc)_&]:grid-cols-[minmax(auto,90rem)_auto] @7xl:[body:has(.site-width-wide,.page-no-toc)_&]:grid-cols-[14rem_minmax(auto,90rem)_14rem]">
+class="-col-start-2 row-start-1 flex items-start @xs:justify-end xl:hidden">
+>
+class="col-span-full flex w-full grow items-center justify-center gap-2">
+>
+>
+>
+>
+hidden id="S:0">
+class="overflow-y-auto">
+class="flex flex-row relative h-fit mt-2 first:mt-0 mb-0.5"> Warp
+>
+class="flex flex-row relative h-fit mt-2 first:mt-0 mb-0.5"> Oz: The orchestration platform for cloud agents
+>
+class="flex flex-row relative h-fit first:mt-0 ml-3 my-0 sidebar-list-line:ml-0"> Local agents
+>
+class="flex flex-row relative h-fit first:mt-0 ml-3 my-0 sidebar-list-line:ml-0"> Cloud agents
+>
+class="flex flex-row relative h-fit mt-2 first:mt-0 mb-0.5"> How they work together
+>
+class="flex flex-row relative h-fit mt-2 first:mt-0 mb-0.5"> Multi-model support
+>
+class="flex flex-row relative h-fit mt-2 first:mt-0 mb-0.5"> Privacy and security
+>
+class="flex flex-row relative h-fit mt-2 first:mt-0 mb-0.5"> Next steps
+>
+>
+>
+hidden id="S:1">
+class="flex flex-col gap-3 text-sm">
+class="flex flex-wrap items-center gap-2">
+>Was this helpful?
+>
+class="flex h-fit items-stretch justify-start overflow-hidden *:translate-y-0! *:shadow-none! [&>*:not(:first-child)]:border-l-0 [&>*:not(:first-child,:last-child)]:rounded-none! [&>*:not(:only-child):first-child]:rounded-r-none [&>*:not(:only-child):last-child]:rounded-l-none rounded-full border border-tint bg-tint-base">
+>
+>
+>
+>
+hidden id="S:2">
+class="flex h-fit items-stretch justify-start overflow-hidden gap-2" role="radiogroup">
+>
+>
+hidden id="S:3">
+class="flex h-fit items-stretch justify-start overflow-hidden gap-2" role="radiogroup">
+>
+>

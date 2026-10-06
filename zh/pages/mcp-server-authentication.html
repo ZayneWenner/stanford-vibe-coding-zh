@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>构建远程 MCP 服务器</title>
+<style>
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;max-width:860px;margin:auto;padding:24px;line-height:1.8;color:#1a1a1a}
+h1,h2,h3,h4{border-bottom:1px solid #eee;padding-bottom:6px}
+pre,code{background:#f6f8fa;padding:2px 6px;border-radius:4px;font-family:ui-monospace,Consolas,monospace;overflow-x:auto}
+pre{padding:16px}
+blockquote{border-left:4px solid #ccc;margin:0;padding:0 16px;color:#555}
+a{color:#0366d6}
+table{border-collapse:collapse;width:100%}
+td,th{border:1px solid #ddd;padding:8px}
+.note{background:#fff8e1;border-left:4px solid #f0ad4e;padding:8px 16px;margin:12px 0}
+</style>
+</head>
+<body>
+<p><em>来源：https://developers.cloudflare.com/agents/guides/remote-mcp-server/ ｜ 机器翻译+人工校对稿，术语以 glossary.md 为准。</em></p>
+
+<h1>构建远程 MCP 服务器</h1>
+<p>本指南将介绍如何使用 <a href="https://developers.cloudflare.com/agents/model-context-protocol/transport/">Streamable HTTP 传输</a>（当前 MCP 规范标准）在 Cloudflare 上部署你自己的远程 MCP 服务器。你有两种选择：</p>
+<ul>
+<li><strong>无需认证</strong>——任何人都可连接并使用该服务器（无需登录）。</li>
+<li><strong>带<a href="https://developers.cloudflare.com/agents/guides/remote-mcp-server/#add-authentication">认证与授权</a></strong>——用户在访问工具前需先登录，并且你可以基于用户权限控制某个智能体可以调用哪些工具。</li>
+</ul>
+
+<h2>选择方案</h2>
+<p>Agents SDK 提供了多种创建 MCP 服务器的方式。请根据你的使用场景选择合适的方案：</p>
+<table>
+<thead>
+<tr><th>方案</th><th>有状态？</th><th>需要 Durable Objects？</th><th>最适合</th></tr>
+</thead>
+<tbody>
+<tr><td><code>createMcpHandler()</code></td><td>否</td><td>否</td><td>无状态工具，最简单的配置</td></tr>
+<tr><td><code>McpAgent</code></td><td>是</td><td>是</td><td>有状态工具、按会话保存状态、支持 elicitation（询问）</td></tr>
+<tr><td>原生 <code>WebStandardStreamableHTTPServerTransport</code></td><td>否</td><td>否</td><td>完全掌控，不依赖 SDK</td></tr>
+</tbody>
+</table>
+<ul>
+<li><code>createMcpHandler()</code> 是启动一个无状态 MCP 服务器最快的方式。当你的工具不需要按会话保存状态时使用它。</li>
+<li><code>McpAgent</code> 为每个会话提供一个 Durable Object，内置状态管理、elicitation 支持，并同时支持 SSE 与 Streamable HTTP 两种传输方式。</li>
+<li>原生传输方式让你在使用 <code>@modelcontextprotocol/sdk</code> 时拥有完全掌控，且不依赖 Agents SDK 的辅助函数。</li>
+</ul>
+
+<h2>部署你的第一个 MCP 服务器</h2>
+<p>你可以先部署一个<a href="https://github.com/cloudflare/ai/tree/main/demos/remote-mcp-authless">无需认证的公开 MCP 服务器</a>，之后再补上用户认证与范围化授权。如果你已经确定服务器需要认证，可以直接跳到<a href="https://developers.cloudflare.com/agents/guides/remote-mcp-server/#add-authentication">下一节</a>。</p>
+
+<h3>通过控制台（Dashboard）</h3>
+<p>下方按钮会引导你完成将<a href="https://github.com/cloudflare/ai/tree/main/demos/remote-mcp-authless">示例 MCP 服务器</a>部署到你的 Cloudflare 账户所需的一切操作。</p>
+<p>部署完成后，该服务器将运行在你的 <code>workers.dev</code> 子域名下（例如 <code>remote-mcp-server-authless.your-account.workers.dev/mcp</code>）。你可以立即通过 <a href="https://playground.ai.cloudflare.com/">AI Playground</a>（一个远程 MCP 客户端）、<a href="https://github.com/modelcontextprotocol/inspector">MCP Inspector</a> 或<a href="https://developers.cloudflare.com/agents/guides/remote-mcp-server/#connect-from-an-mcp-client-via-a-local-proxy">其他 MCP 客户端</a>连接它。</p>
+<p>系统会在你的 GitHub 或 GitLab 账户上为你这个 MCP 服务器建立一个全新的 git 仓库，并配置为：每当你向仓库的 main 分支推送改动或合并拉取请求时，自动部署到 Cloudflare。你可以克隆该仓库、<a href="https://developers.cloudflare.com/agents/guides/remote-mcp-server/#via-the-cli">在本地开发</a>，并开始用你自己的<a href="https://developers.cloudflare.com/agents/model-context-protocol/tools/">工具</a>定制这个 MCP 服务器。</p>
+
+<h3>通过 CLI</h3>
+<p>你可以使用 <a href="https://developers.cloudflare.com/workers/wrangler">Wrangler CLI</a> 在本地机器上创建新的 MCP 服务器并部署到 Cloudflare。</p>
+<ul>
+<li>打开终端并运行以下命令：</li>
+</ul>
+<p>使用 npm：</p>
+<pre>npm create cloudflare@latest -- remote-mcp-server-authless --template=cloudflare/ai/demos/remote-mcp-authless</pre>
+<p>使用 yarn：</p>
+<pre>yarn create cloudflare remote-mcp-server-authless --template=cloudflare/ai/demos/remote-mcp-authless</pre>
+<p>使用 pnpm：</p>
+<pre>pnpm create cloudflare@latest remote-mcp-server-authless --template=cloudflare/ai/demos/remote-mcp-authless</pre>
+<p>在设置过程中，请选择以下选项：</p>
+<ul>
+<li>对于"是否要添加 AGENTS.md 文件以帮助 AI 编码工具理解 Cloudflare API？"，选择 <code>No</code>。</li>
+<li>对于"是否要使用 git 进行版本控制？"，选择 <code>No</code>。</li>
+<li>对于"是否要部署你的应用？"，选择 <code>No</code>（我们会在部署前先测试服务器）。</li>
+</ul>
+<p>现在，你的 MCP 服务器已经配置完成，依赖也已安装。</p>
+<ul>
+<li>进入项目文件夹：</li>
+</ul>
+<pre>cd remote-mcp-server-authless</pre>
+<ul>
+<li>在新项目目录下，运行以下命令启动开发服务器：</li>
+</ul>
+<pre>npm start</pre>
+<pre>⎈ Starting local server...[wrangler:info] Ready on http://localhost:8788</pre>
+<p>请查看命令输出中的本地端口。在此示例中，MCP 服务器运行在端口 <code>8788</code>，MCP 端点 URL 为 <code>http://localhost:8788/mcp</code>。</p>
+<div class="note">
+<p><strong>注意：</strong>你无法通过直接在 Web 浏览器中打开 <code>/mcp</code> URL 来与 MCP 服务器交互。<code>/mcp</code> 端点期望由 MCP 客户端发送 MCP 协议消息，而浏览器默认不会这样做。下一步我们将演示如何使用 MCP 客户端连接服务器。</p>
+</div>
+<ul>
+<li>要在本地测试服务器：</li>
+</ul>
+<p>在一个新的终端里，运行 <a href="https://github.com/modelcontextprotocol/inspector">MCP Inspector</a>。MCP Inspector 是一个交互式 MCP 客户端，允许你从 Web 浏览器连接 MCP 服务器并调用工具。</p>
+<pre>npx @modelcontextprotocol/inspector@latest</pre>
+<pre>🚀 MCP Inspector is up and running at: http://localhost:5173/?MCP_PROXY_AUTH_TOKEN=46ab..cd3
+🌐 Opening browser...</pre>
+<p>MCP Inspector 将在你的 Web 浏览器中启动。你也可以手动启动它：打开浏览器并访问 <code>http://localhost:&lt;PORT&gt;</code>。请查看命令输出，确认 MCP Inspector 运行的本地端口。在此示例中，MCP Inspector 运行在端口 <code>5173</code>。</p>
+<ul>
+<li>在 MCP Inspector 中，输入你的 MCP 服务器 URL（<code>http://localhost:8788/mcp</code>），然后选择 Connect（连接）。选择 List Tools（列出工具）以显示 MCP 服务器暴露的工具。</li>
+<li>你现在可以将 MCP 服务器部署到 Cloudflare。从你的项目目录运行：</li>
+</ul>
+<pre>npx wrangler@latest deploy</pre>
+<p>如果你已经为承载 MCP 服务器的 Worker <a href="https://developers.cloudflare.com/workers/ci-cd/builds/">连接了 git 仓库</a>，你也可以通过向仓库 main 分支推送改动或合并拉取请求来部署 MCP 服务器。</p>
+<p>MCP 服务器将被部署到你的 <code>*.workers.dev</code> 子域名，地址为 <code>https://remote-mcp-server-authless.your-account.workers.dev/mcp</code>。</p>
+<ul>
+<li>要测试远程 MCP 服务器，请取你已部署 MCP 服务器的 URL（<code>https://remote-mcp-server-authless.your-account.workers.dev/mcp</code>），并输入到运行在 <code>http://localhost:5173</code> 的 MCP Inspector 中。</li>
+</ul>
+<p>现在你拥有了一个 MCP 客户端可以连接的远程 MCP 服务器。</p>
+
+<h2>通过本地代理从 MCP 客户端连接</h2>
+<p>既然你的远程 MCP 服务器已经在运行，你可以使用 <a href="https://www.npmjs.com/package/mcp-remote">mcp-remote 本地代理</a> 将 Claude Desktop 或其他 MCP 客户端连接到它——即使你的 MCP 客户端不支持远程传输或服务端授权也没关系。这可以让你用一个真实的 MCP 客户端测试与远程 MCP 服务器的交互体验。</p>
+<p>例如，要从 Claude Desktop 连接：</p>
+<ul>
+<li>更新你的 Claude Desktop 配置，使其指向你的 MCP 服务器 URL：</li>
+</ul>
+<pre>{
+  "mcpServers": {
+    "math": {
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "https://remote-mcp-server-authless.your-account.workers.dev/mcp"
+      ]
+    }
+  }
+}</pre>
+<ul>
+<li>重启 Claude Desktop 以加载该 MCP 服务器。完成后，Claude 就能调用你的远程 MCP 服务器了。</li>
+<li>要测试，可以让 Claude 使用你的某个工具。例如：</li>
+</ul>
+<pre>你能用 math 工具把 23 和 19 加起来吗？</pre>
+<p>Claude 应当会调用该工具，并展示由远程 MCP 服务器生成的结果。</p>
+<p>要了解如何与其他 MCP 客户端一起使用远程 MCP 服务器，请参阅 <a href="https://developers.cloudflare.com/agents/guides/test-remote-mcp-server">测试远程 MCP 服务器</a>。</p>
+
+<h2>添加认证</h2>
+<p>你之前部署的公开 MCP 服务器示例允许任何客户端在无需登录的情况下连接并调用工具。要给你的 MCP 服务器添加用户认证，你可以将 Cloudflare Access 或第三方服务集成为 OAuth 提供方。你的 MCP 服务器负责处理安全的登录流程，并签发访问令牌（access token），供 MCP 客户端用于发起经过认证的 tool 调用。用户通过 OAuth 提供方登录，并授予其 AI 智能体使用范围化（scoped）权限来与你的 MCP 服务器暴露的工具交互。</p>
+
+<h3>Cloudflare Access OAuth</h3>
+<p>你可以将 MCP 服务器配置为要求用户通过 Cloudflare Access 进行认证。Cloudflare Access 充当身份聚合器，验证用户邮箱、来自你现有<a href="https://developers.cloudflare.com/cloudflare-one/integrations/identity-providers/">身份提供方</a>（如 GitHub 或 Google）的信号，以及其他属性（如 IP 地址或设备证书）。当用户连接 MCP 服务器时，会被提示登录已配置的身份提供方，只有在通过你的<a href="https://developers.cloudflare.com/cloudflare-one/access-controls/policies/#selectors">Access 策略</a>后才会被授予访问权限。</p>
+<p>关于分步部署指南，请参阅 <a href="https://developers.cloudflare.com/cloudflare-one/access-controls/ai-controls/saas-mcp/">使用 Access for SaaS 保护 MCP 服务器</a>。</p>
+
+<h3>第三方 OAuth</h3>
+<p>你可以将 MCP 服务器与任何支持 OAuth 2.0 规范的 <a href="https://developers.cloudflare.com/agents/model-context-protocol/authorization/#2-third-party-oauth-provider">OAuth 提供方</a>连接，包括 GitHub、Google、Slack、<a href="https://developers.cloudflare.com/agents/model-context-protocol/authorization/#stytch">Stytch</a>、<a href="https://developers.cloudflare.com/agents/model-context-protocol/authorization/#auth0">Auth0</a>、<a href="https://developers.cloudflare.com/agents/model-context-protocol/authorization/#workos">WorkOS</a> 等。</p>
+<p>以下示例演示如何使用 GitHub 作为 OAuth 提供方。</p>
+
+<h4>第 1 步 —— 创建新的 MCP 服务器</h4>
+<p>运行以下命令，创建一个带 GitHub OAuth 的新 MCP 服务器：</p>
+<p>使用 npm：</p>
+<pre>npm create cloudflare@latest -- my-mcp-server-github-auth --template=cloudflare/ai/demos/remote-mcp-github-oauth</pre>
+<p>使用 yarn：</p>
+<pre>yarn create cloudflare my-mcp-server-github-auth --template=cloudflare/ai/demos/remote-mcp-github-oauth</pre>
+<p>使用 pnpm：</p>
+<pre>pnpm create cloudflare@latest my-mcp-server-github-auth --template=cloudflare/ai/demos/remote-mcp-github-oauth</pre>
+<p>现在，你的 MCP 服务器已经配置完成，依赖也已安装。进入该项目文件夹：</p>
+<pre>cd my-mcp-server-github-auth</pre>
+<p>你会注意到，在示例 MCP 服务器中，如果你打开 <code>src/index.ts</code>，主要的区别在于 <code>defaultHandler</code> 被设置成了 <code>GitHubHandler</code>：</p>
+<pre>import GitHubHandler from "./github-handler";
+
+export default new OAuthProvider({
+  apiRoute: "/mcp",
+  apiHandler: MyMCP.serve("/mcp"),
+  defaultHandler: GitHubHandler,
+  authorizeEndpoint: "/authorize",
+  tokenEndpoint: "/token",
+  clientRegistrationEndpoint: "/register",
+});</pre>
+<p>这确保用户会被重定向到 GitHub 进行认证。不过要让它工作，你需要在下面的步骤中创建 OAuth 客户端应用。</p>
+
+<h4>第 2 步 —— 创建 OAuth 应用</h4>
+<p>你需要创建两个 <a href="https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app">GitHub OAuth App</a>，将 GitHub 用作 MCP 服务器的认证提供方——一个用于本地开发，一个用于生产环境。</p>
+
+<h4>第 2.1 步 —— 为本地开发创建新的 OAuth 应用</h4>
+<ul>
+<li>前往 <a href="https://github.com/settings/developers">github.com/settings/developers</a> 创建一个新的 OAuth App，设置如下：
+<ul>
+<li>Application name（应用名称）：<code>My MCP Server (local)</code></li>
+<li>Homepage URL（主页 URL）：<code>http://localhost:8788</code></li>
+<li>Authorization callback URL（授权回调 URL）：<code>http://localhost:8788/callback</code></li>
+</ul>
+</li>
+<li>对于你刚创建的 OAuth App，将它的 client ID 添加为 <code>GITHUB_CLIENT_ID</code>，并生成一个 client secret 添加为 <code>GITHUB_CLIENT_SECRET</code>，写入项目根目录的 <code>.env</code> 文件中，该文件<a href="https://developers.cloudflare.com/workers/configuration/secrets/">将用于在本地开发中设置密钥</a>：</li>
+</ul>
+<pre>touch .env
+echo 'GITHUB_CLIENT_ID="your-client-id"' >> .env
+echo 'GITHUB_CLIENT_SECRET="your-client-secret"' >> .env
+cat .env</pre>
+<ul>
+<li>运行以下命令启动开发服务器：</li>
+</ul>
+<pre>npm start</pre>
+<p>你的 MCP 服务器现在运行在 <code>http://localhost:8788/mcp</code>。</p>
+<ul>
+<li>在一个新的终端里，运行 <a href="https://github.com/modelcontextprotocol/inspector">MCP Inspector</a>。MCP Inspector 是一个交互式 MCP 客户端，允许你从 Web 浏览器连接 MCP 服务器并调用工具。</li>
+</ul>
+<pre>npx @modelcontextprotocol/inspector@latest</pre>
+<ul>
+<li>在你的 Web 浏览器中打开 MCP Inspector：</li>
+</ul>
+<pre>open http://localhost:5173</pre>
+<ul>
+<li>在 Inspector 中，输入你的 MCP 服务器 URL：<code>http://localhost:8788/mcp</code>。</li>
+<li>在右侧主面板中，点击 OAuth Settings（OAuth 设置）按钮，然后点击 Quick OAuth Flow（快速 OAuth 流程）。</li>
+</ul>
+<p>你应该会被重定向到 GitHub 登录或授权页面。在授权 MCP 客户端（即 Inspector）访问你的 GitHub 账户后，你会被重定向回 Inspector。</p>
+<ul>
+<li>在侧边栏点击 Connect（连接），你应该会看到"List Tools"（列出工具）按钮，点击它会列出你的 MCP 服务器暴露的工具。</li>
+</ul>
+
+<h4>第 2.2 步 —— 为生产环境创建新的 OAuth 应用</h4>
+<p>你需要重复<a href="#step-21">第 2.1 步</a>，为生产环境创建一个新的 OAuth App。</p>
+<ul>
+<li>前往 <a href="https://github.com/settings/developers">github.com/settings/developers</a> 创建一个新 OAuth App，设置如下：
+<ul>
+<li>Application name（应用名称）：<code>My MCP Server (production)</code></li>
+<li>Homepage URL（主页 URL）：填入你已部署 MCP 服务器的 workers.dev URL（例如 <code>worker-name.account-name.workers.dev</code>）</li>
+<li>Authorization callback URL（授权回调 URL）：填入你已部署 MCP 服务器的 workers.dev URL 的 <code>/callback</code> 路径（例如 <code>worker-name.account-name.workers.dev/callback</code>）</li>
+</ul>
+</li>
+<li>对于你刚创建的 OAuth App，使用 Wrangler CLI 添加 client ID 与 client secret：</li>
+</ul>
+<pre>npx wrangler secret put GITHUB_CLIENT_ID</pre>
+<pre>npx wrangler secret put GITHUB_CLIENT_SECRET</pre>
+<pre>npx wrangler secret put COOKIE_ENCRYPTION_KEY # 这里填入任意随机字符串，例如：openssl rand -hex 32</pre>
+<div class="note">
+<p><strong>警告：</strong>当你创建第一个 secret 时，Wrangler 会询问是否要创建一个新的 Worker。请输入 "Y" 以创建新 Worker 并保存该 secret。</p>
+</div>
+<ul>
+<li>设置一个 KV 命名空间：</li>
+</ul>
+<p>a. 创建 KV 命名空间：</p>
+<pre>npx wrangler kv namespace create "OAUTH_KV"</pre>
+<p>b. 用得到的 KV ID 更新 <code>wrangler.jsonc</code> 文件：</p>
+<pre>{
+  "kvNamespaces": [
+    {
+      "binding": "OAUTH_KV",
+      "id": "&lt;YOUR_KV_NAMESPACE_ID&gt;"
+    }
+  ]
+}</pre>
+<ul>
+<li>将 MCP 服务器部署到你的 Cloudflare <code>workers.dev</code> 域名：</li>
+</ul>
+<pre>npm run deploy</pre>
+<ul>
+<li>使用 <a href="https://playground.ai.cloudflare.com/">AI Playground</a>、MCP Inspector 或<a href="https://developers.cloudflare.com/agents/guides/test-remote-mcp-server/">其他 MCP 客户端</a>，连接到运行在 <code>worker-name.account-name.workers.dev/mcp</code> 的服务器，并用 GitHub 进行认证。</li>
+</ul>
+
+<h2>下一步</h2>
+<ul>
+<li><a href="https://developers.cloudflare.com/agents/model-context-protocol/tools/">MCP 工具</a>——为你的 MCP 服务器添加工具。</li>
+<li><a href="https://developers.cloudflare.com/agents/model-context-protocol/authorization/">授权</a>——自定义认证与授权。</li>
+</ul>
+<p><em>（本文为 Cloudflare Agents 文档，原文含导航与页脚，此处仅翻译正文主体。最后更新：2026 年 3 月 27 日。）</em></p>
+</body>
+</html>

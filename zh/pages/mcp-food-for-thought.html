@@ -1,0 +1,72 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>API 不是好的 MCP 工具</title><style>body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;max-width:860px;margin:auto;padding:24px;line-height:1.8;color:#1a1a1a}h1,h2,h3{border-bottom:1px solid #eee;padding-bottom:6px}pre,code{background:#f6f8fa;padding:2px 6px;border-radius:4px;font-family:ui-monospace,Consolas,monospace;overflow-x:auto}pre{padding:16px}blockquote{border-left:4px solid #ccc;margin:0;padding:0 16px;color:#555}a{color:#0366d6}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ddd;padding:8px}</style></head><body>
+<p><em>来源：https://www.reillywood.com/blog/apis-dont-make-good-mcp-tools/ ｜ 机器翻译+人工校对稿，术语以 glossary.md 为准。</em></p>
+
+<h1>API 不是好的 MCP 工具</h1>
+<p><strong>作者：</strong>Reilly Wood　<strong>阅读时长：</strong>约 4 分钟</p>
+
+<p>模型上下文协议（MCP，Model Context Protocol）如今已是一件大事。它已成为事实标准，用于为大语言模型（LLM）提供访问他人编写的工具的能力，而这当然会把它们变成智能体（agent）。但是，为一个新的 MCP 服务器编写工具是很困难的，因此人们常常提议把现有的 API 自动转换成 MCP 工具；通常的做法是使用 OpenAPI 元数据（<a href="https://github.com/glados11325/openapi-to-mcp" rel="noreferrer">1</a>、<a href="https://github.com/snaggle-ai/openapi-to-mcp" rel="noreferrer">2</a>）。</p>
+
+<p>根据我的经验，这样做能跑通，但效果并不好。以下是几个原因：</p>
+
+<h2>智能体在面对大量工具时表现不佳</h2>
+<p>一个臭名昭著的例子是，VS Code 对工具有 128 个的硬性上限——但许多模型早在达到这个数字之前，就已经难以准确地进行工具调用了。此外，每一个工具及其描述都会占用宝贵的上下文窗口空间。</p>
+
+<p>大多数 Web API 在设计时根本没有考虑这些约束！当这些 API 是从代码中调用时，针对单一产品领域提供不计其数的 API 并无问题；但如果把每一个 API 都映射成一个 MCP 工具，结果可能就不太理想了。</p>
+
+<p>从零开始设计的 MCP 工具，通常比单个 Web API 灵活得多，每个工具都能完成好几个独立 API 的工作。</p>
+
+<h2>API 会迅速击穿上下文窗口</h2>
+<p>想象一个每次返回 100 条记录的 API，而每条记录都非常宽（比如 50 个字段）。把这些结果原封不动地发给一个智能体，会消耗大量 Token；即便某个查询只需要少数几个字段就能满足，每一个字段最终也会进入上下文窗口。</p>
+
+<p>API 通常是按记录数量来分页的，但记录的大小可能相差悬殊。一条记录可能包含一个占用 100,000 个 Token 的巨大文本字段，而另一条可能只有 10 个 Token。把这些 API 结果直接塞进智能体的上下文窗口，无异于一场赌博——有时能行，有时就会爆掉。</p>
+
+<p>数据的格式也可能成为问题。如今大多数 Web API 返回 JSON，但 JSON 是一种 Token 效率极低的格式。看看这个：</p>
+
+<pre><code>[
+  {
+    "firstName": "Alice",
+    "lastName": "Johnson",
+    "age": 28
+  },
+  {
+    "firstName": "Bob",
+    "lastName": "Smith",
+    "age": 35
+  }
+]</code></pre>
+
+<p>再与同样数据的 CSV 格式对比一下：</p>
+
+<pre><code>firstName,lastName,age
+Alice,Johnson,28
+Bob,Smith,35</code></pre>
+
+<p>CSV 数据要简洁得多——每条记录所用的 Token 只有前者的一半。通常来说，CSV、TSV，或者用于嵌套数据的 YAML，都是比 JSON 更好的选择。</p>
+
+<p>以上这些都不是无法克服的问题。你可以设想自动添加让智能体投影（project）字段的工具参数、自动截断或总结大型结果，以及自动把 JSON 结果转换成 CSV（嵌套数据则转成 YAML）。但我所见过的服务器，大多一样都没做。</p>
+
+<h2>API 未能充分利用智能体独特的能力</h2>
+<p>API 返回的是供程序消费的结构化数据。这往往正是智能体在工具调用中所想要的……但智能体也能处理其他更自由形式的指令。</p>
+
+<p>例如，一个 <code>ask_question</code> 工具可以对某些文档执行一次检索增强生成（RAG）查询，然后以纯文本形式返回信息，用于指导下一次工具调用——从而完全跳过结构化数据。</p>
+
+<p>又或者，对 <code>search_cities</code> 工具的调用，可以返回一个结构化的城市列表，以及一条关于下一步该调用什么的建议：</p>
+
+<pre><code>city_name,population,country,region
+Tokyo,37194000,Japan,Asia
+Delhi,32941000,India,Asia
+Shanghai,28517000,China,Asia
+
+Suggestion: To get more specific information (weather, attractions, demographics), try calling get_city_details with the city_name parameter.</code></pre>
+
+<p>这种分层与工具链式调用（tool chaining），在 MCP 服务器中能够非常有效；而如果只是把 API 自动转换成工具，你就完全错过了它。</p>
+
+<h2>如果智能体需要调用某个 API，它大可以直接调用</h2>
+<p>像 Claude Code 这样的智能体，如今在编写并执行代码（包括调用 Web API 的脚本）方面已经相当出色。有些人甚至由此走向极端，主张根本就不需要 MCP！</p>
+
+<p>我并不赞同这个结论，但我确实认为我们应该滑向冰球即将到达的地方（skate to where the puck is going）。智能体的沙箱化（sandboxing）正在快速改善，而如果让智能体直接调用 API 既简单又安全，那么我们不妨就这么办，省掉中间这一层。</p>
+
+<h2>结论</h2>
+<p>智能体从根本上不同于 API 的典型消费者。从现有 API 自动创建 MCP 工具是可能的，但这样做很难有良好的效果。只有为智能体独特的能力与局限而专门设计的工具，才能让智能体发挥出最佳水平。</p>
+
+</body></html>

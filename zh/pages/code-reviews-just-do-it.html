@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>代码审查：立刻去做</title><style>body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;max-width:860px;margin:auto;padding:24px;line-height:1.8;color:#1a1a1a}h1,h2,h3{border-bottom:1px solid #eee;padding-bottom:6px}pre,code{background:#f6f8fa;padding:2px 6px;border-radius:4px;font-family:ui-monospace,Consolas,monospace;overflow-x:auto}pre{padding:16px}blockquote{border-left:4px solid #ccc;margin:0;padding:0 16px;color:#555}a{color:#0366d6}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ddd;padding:8px}</style></head><body>
+<p><em>来源：https://blog.codinghorror.com/code-reviews-just-do-it/ ｜ 机器翻译+人工校对稿，术语以 glossary.md 为准。</em></p>
+
+<h1>代码审查：立刻去做</h1>
+<p><strong>作者：</strong>Jeff Atwood　<strong>发布日期：</strong>2006 年 1 月 21 日　<strong>阅读时长：</strong>约 2 分钟</p>
+
+<p>在 <a href="https://web.archive.org/web/20060315135514/http://www.processimpact.com/articles/humanizing_reviews.html" rel="noreferrer">《让同行评审更人性化》（Humanizing Peer Reviews）</a>一文中，Karl Wiegers 以一个有力的论断开篇：</p>
+
+<blockquote>
+<p>同行评审（Peer review）——即由软件交付物作者之外的人对其进行检查、以发现缺陷和改进机会的活动——是现有最强大的软件质量工具之一。同行评审的方法包括走查（inspections）、走读（walkthroughs）、同行桌面检查（peer desk checks）以及其他类似活动。在亲身体验了同行评审近十五年的好处之后，我绝不会再加入一个不开展这项活动的团队。</p>
+</blockquote>
+
+<p>在 Vertigo 工作了一段时间、参与过不少代码审查之后，我确信：<strong>同行代码审查（peer code review）是你所能做的、对改善代码帮助最大的一件事。</strong>如果你此刻没有和另一位开发者一起做代码审查，那么你就是在放过代码里的大量缺陷，也是在剥夺自己一些关键的职业发展机会。就我而言，除非我和一位同行开发者一起过了一遍代码，否则我的代码就不算完成。</p>
+
+<p>不过，别只听我的一面之词。在 <a href="http://www.amazon.com/exec/obidos/ASIN/0735619670" rel="noreferrer">《代码大全》（Code Complete）</a>一书中，McConnell 为代码审查的有效性提供了充分的证据：</p>
+
+<blockquote>
+<p>……仅靠软件测试，效果是有限的——单元测试的平均缺陷检出率仅为 25%，功能测试为 35%，集成测试为 45%。相比之下，<strong>设计与代码审查的平均有效性分别为 55% 和 60%</strong>。对审查结果的案例研究令人印象深刻：</p>
+<ul>
+<li>在一个软件维护组织中，引入代码审查之前，单行维护变更中有 55% 存在错误；引入审查之后，只有 2% 的变更存在错误。如果把所有变更都算上，引入审查后首次就正确的变更比例达到了 95%；而在引入审查之前，首次就正确的比例不到 20%。</li>
+<li>在同一批人开发的 11 个程序中，前 5 个是在没有审查的情况下开发的，其余 6 个则采用了审查。所有程序投入生产后，前 5 个平均每 100 行代码有 4.5 个错误；经过审查的那 6 个平均每 100 行只有 0.82 个错误。审查将错误数量削减了超过 80%。</li>
+<li>Aetna 保险公司通过采用审查，在一个程序中找出了 82% 的错误，并将开发资源减少了 20%。</li>
+<li>IBM 一个 50 万行的 Orbit 项目使用了 11 个层级的审查，项目提前交付，错误数量仅约为正常预期值的 1%。</li>
+<li>对 AT&amp;T 一个拥有 200 多名员工的组织的调查显示，引入审查后，生产率提升了 14%，缺陷减少了 90%。</li>
+<li>喷气推进实验室（Jet Propulsion Laboratories）估计，通过在早期阶段发现并修复缺陷，每次审查大约能节省 25,000 美元。</li>
+</ul>
+</blockquote>
+
+<p>开展代码审查唯一的障碍，就是找到一位你尊敬、愿意来做审查的开发者，并抽出时间来完成这次审查。一旦你开始做，我想你会很快发现：你在代码审查上花下的每一分钟，都会获得十倍的回报。</p>
+
+<p>如果你的组织刚开始接触代码审查，我强烈推荐 Karl 的书，<a href="http://www.amazon.com/exec/obidos/ASIN/0201734850" rel="noreferrer">《软件中的同行评审：实用指南》（Peer Reviews in Software: A Practical Guide）</a>。Karl 在其网站上提供的<a href="https://web.archive.org/web/20060315135046/http://www.processimpact.com/reviews_book/reviews_book_toc.shtml" rel="noreferrer">示例章节</a>，同样是一份很棒的入门材料。</p>
+
+</body></html>

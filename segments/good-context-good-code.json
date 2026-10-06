@@ -1,0 +1,18 @@
+{
+ "file": "good-context-good-code.html",
+ "word_count": 58,
+ "segments": [
+  "StockApp Engineering",
+  "document.documentElement.classList.remove('no-js');",
+  "document.documentElement.classList.add('js');",
+  "StockApp Engineering",
+  "The StockApp engineering blog",
+  "Subscribe",
+  "Enter access code",
+  "Enter &rarr;",
+  "Powered by Ghost",
+  "Enter access code",
+  "Site owner login",
+  "{\"tooManyAttemptsMessage\":\"Too many sign-up attempts, try again later\",\"restrictedDomainMessage\":\"Signups from this email domain are currently restricted.\",\"subscriptionConfirmedMessage\":\"Subscription confirmed!\",\"confirmEmailMessage\":\"Thanks! Now check your email to confirm.\",\"genericErrorMessage\":\"Something went wrong, please try again.\",\"invalidEmailMessage\":\"Please enter a valid email address\",\"successResetDelay\":1000,\"footerLinksSelector\":\".gh-private-trigger-wrap\",\"accessDialogSelector\":\"#access\"}"
+ ]
+}

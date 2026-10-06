@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Anthropic 各团队如何使用 Claude Code（中文版）</title>
+<style>
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;max-width:900px;margin:auto;padding:24px;line-height:1.85;color:#1a1a1a}
+h1,h2,h3,h4{border-bottom:1px solid #eee;padding-bottom:6px;color:#2c3e50}
+h1{font-size:1.8em}
+.code{background:#f6f8fa;padding:2px 6px;border-radius:4px;font-family:ui-monospace,Consolas,monospace}
+pre{background:#f6f8fa;padding:16px;border-radius:6px;overflow-x:auto;font-family:ui-monospace,Consolas,monospace}
+blockquote{border-left:4px solid #ccc;margin:0;padding:0 16px;color:#555}
+a{color:#0366d6}
+table{border-collapse:collapse;width:100%}
+td,th{border:1px solid #ddd;padding:8px}
+.tip{background:#eef7ff;border-left:4px solid #3498db;padding:8px 16px;margin:12px 0}
+.note{background:#fff7e6;border-left:4px solid #f39c12;padding:8px 16px;margin:12px 0}
+ul li{margin:6px 0}
+</style>
+</head>
+<body>
+
+<p><em>来源：https://www.anthropic.com/claude-code 内部使用案例 PDF ｜ 机器翻译+人工校对稿，术语以 glossary.md 为准。</em></p>
+
+<h1>Anthropic 各团队如何使用 Claude Code</h1>
+
+<p>Anthropic 的内部团队正在用 Claude Code 重塑自身的工作流，让开发者和非技术员工都能攻克复杂项目、自动化任务，并弥合那些以往限制生产力的技能鸿沟。通过对我们自己的 Claude Code 重度用户的访谈，我们收集了不同部门如何运用 Claude Code、它对其工作的影响，以及一些供其他考虑采用该工具的组织参考的建议。</p>
+
+<div class="note"><strong>术语说明：</strong>本文档中 Claude Code、Claude.ai、MCP、Terraform、Kubernetes、GitHub Actions、Figma、React、Rust、TypeScript、G Suite、Meta Ads、Google Ads 等专有名词与工具名均保留英文原文。</div>
+
+<h2>一、数据基础设施团队（Data Infrastructure）</h2>
+<p>数据基础设施团队负责为公司各业务团队组织全部业务数据。他们用 Claude Code 来自动化常规数据工程任务、排查复杂的基础设施问题，并为技术和非技术团队成员创建可记录的流程，使其能够独立访问和操作数据。</p>
+
+<h3>主要使用场景</h3>
+<ul>
+<li><strong>借助截图排查 Kubernetes 故障</strong>：当 Kubernetes 集群宕机、无法调度新 Pod 时，团队用 Claude Code 诊断问题。他们把仪表盘的截图喂给 Claude Code，后者逐层引导他们浏览 Google Cloud 的 UI 菜单，直到找到"Pod IP 地址耗尽"的告警。Claude Code 随后给出创建新 IP 池并将其加入集群的确切命令，从而绕开了对网络专家介入的需求。</li>
+<li><strong>为财务团队编写纯文本工作流</strong>：团队向财务成员演示如何编写描述其数据流程的纯文本文件，再加载进 Claude Code 实现全自动执行。没有编程经验的员工也能描述"查询这个仪表盘、获取信息、运行这些查询、产出 Excel"之类的步骤，Claude Code 便会执行整个流程，包括索要日期等必要输入。</li>
+<li><strong>为新员工提供代码库导航</strong>：新数据科学家加入时，会被引导用 Claude Code 导航庞大的代码库。Claude Code 会读取他们的 Claude.md（文档）文件、定位具体任务相关的文件、解释数据管道依赖关系，并帮助新人理解哪些上游源会流入仪表盘。这替代了传统的数据目录与可发现性工具。</li>
+<li><strong>会话结束时的文档更新</strong>：团队要求 Claude Code 在每个任务结束时总结已完成的工作并给出改进建议。这形成了一个持续改进的闭环，Claude Code 根据实际使用情况帮助完善 Claude.md 文档与工作流指令，让后续迭代更高效。</li>
+<li><strong>跨多个实例的并行任务管理</strong>：处理长耗时数据任务时，他们会在不同代码库的不同项目上开多个 Claude Code 实例。每个实例都保持完整上下文，因此当他们几小时或几天后切回来时，Claude Code 能精确记得他们做到哪、停在哪，实现真正的并行工作流管理而无上下文丢失。</li>
+</ul>
+
+<h3>团队影响</h3>
+<ul>
+<li><strong>无需专门技能即可解决基础设施问题</strong>：解决了通常需要拉来系统或网络团队成员的 Kubernetes 集群问题，用 Claude Code 诊断并给出精确修复。</li>
+<li><strong>加速入职</strong>：新的数据分析师和团队成员无需大量指导即可快速理解复杂系统并做出实质性贡献。</li>
+<li><strong>增强支持工作流</strong>：能处理大得多的数据量并识别异常（如监控 200 个仪表盘），这靠人工手动审查是不可能的。</li>
+<li><strong>实现跨团队自助服务</strong>：没有编程经验的财务团队现在能独立执行复杂的数据工作流。</li>
+</ul>
+
+<div class="tip"><strong>数据基础设施团队的建议</strong>
+<ul>
+<li>编写详尽的 Claude.md 文件：你在 Claude.md 中记录的工作流、工具和期望越详细，Claude Code 表现越好。这让 Claude Code 在有现成模式时擅长搭建新数据管道等常规任务。</li>
+<li>对敏感数据用 MCP 服务器而非 CLI：他们建议用 MCP 服务器而非 BigQuery CLI，以便对 Claude Code 能访问什么保有更好的安全控制，尤其在处理需要日志或存在隐私顾虑的敏感数据时。</li>
+<li>分享团队的实操会话：团队举办过成员互相演示 Claude Code 工作流的会话，这有助于传播最佳实践，并展示出他们自己可能没发现的工具用法。</li>
+</ul></div>
+
+<h2>二、产品开发团队（Claude Code 团队自身）</h2>
+<p>Claude Code 团队用他们自己的产品来构建 Claude Code 的更新，扩展该产品的企业级能力与智能体循环（agentic loop）功能。</p>
+
+<h3>主要使用场景</h3>
+<ul>
+<li><strong>用自动接受模式快速原型开发</strong>：工程师启用"自动接受模式"（Shift+Tab）并设置自主循环，让 Claude 写代码、跑测试、持续迭代，从而用 Claude Code 做快速原型。他们把不熟悉的抽象问题交给 Claude，让它自主工作，然后在接手做最终打磨前审查完成约 80% 的解决方案。团队强调从干净的 git 状态起步、定期提交检查点，以便在 Claude 跑偏时能轻松回滚任何错误改动。</li>
+<li><strong>为核心功能做同步编码</strong>：对于触及应用业务逻辑等更关键的功能，团队与 Claude Code 同步工作，给出带有具体实现指令的详尽提示词，实时监督以保证代码质量、风格指南合规与合理的架构，同时让 Claude 处理重复性的编码工作。</li>
+<li><strong>构建 Vim 模式</strong>：他们最成功的异步项目之一是给 Claude Code 实现 Vim 键绑定。他们让 Claude 构建整个功能（尽管它并非优先事项），最终约 70% 的实现来自 Claude 的自主工作，只需少量迭代即完成。</li>
+<li><strong>测试生成与缺陷修复</strong>：他们用 Claude Code 在实现功能后编写全面的测试，并处理 Pull Request 审查中发现的简单缺陷。他们还利用 GitHub Actions 集成，让 Claude 自动处理 PR 评论（如格式问题或函数重命名）。</li>
+<li><strong>代码库探索</strong>：在处理不熟悉的代码库（如 monorepo 或 API 侧）时，团队用 Claude Code 快速理解系统如何运作。他们不再等待 Slack 回复，而是直接向 Claude 询问解释和代码引用，节省了大量上下文切换时间。</li>
+</ul>
+
+<h3>团队影响</h3>
+<ul>
+<li><strong>更快的功能实现</strong>：成功实现了 Vim 模式等复杂功能，其中 70% 的代码由 Claude 自主编写。</li>
+<li><strong>提升开发速度</strong>：能快速做功能原型并对想法迭代，而不被实现细节拖垮。</li>
+<li><strong>通过自动化测试提高代码质量</strong>：Claude 生成全面的测试并处理常规缺陷修复，在维持高标准的同时降低人工负担。</li>
+<li><strong>更好的代码库探索</strong>：成员无需等待同事回复即可快速理解 monorepo 中不熟悉的模块。</li>
+</ul>
+
+<div class="tip"><strong>Claude Code 团队的建议</strong>
+<ul>
+<li>创建自给自足的循环：让 Claude 通过自动运行构建、测试和 lint 来验证自己的工作。这使 Claude 能更长时间自主工作并自己抓出错误，尤其在你先让 Claude 在写代码前生成测试时效果显著。</li>
+<li>培养任务分类的直觉：学会区分适合异步处理（外围功能、原型开发）与需要同步监督（核心业务逻辑、关键修复）的任务。产品边缘的抽象任务可用"自动接受模式"处理，而核心功能需要更密切的监督。</li>
+<li>形成清晰、详尽的提示词：当组件名称或功能相近时，在请求中务必极其具体。提示词越好越详尽，你就越能信任 Claude 独立工作，而不会意外改动代码库的错误部分。</li>
+</ul></div>
+
+<h2>三、安全工程团队（Security Engineering）</h2>
+<p>安全工程团队聚焦于保障软件开发生命周期、供应链安全与开发环境安全。他们大量使用 Claude Code 来编写和调试代码。</p>
+
+<h3>主要使用场景</h3>
+<ul>
+<li><strong>复杂基础设施调试</strong>：处理线上事件时，他们把堆栈跟踪和文档喂给 Claude Code，让它追踪代码库中的控制流。这显著缩短了生产问题的平均解决时间——让他们在约 5 分钟内理解原本需要 10–15 分钟手动扫代码才能弄明白的问题。</li>
+<li><strong>Terraform 代码审查与分析</strong>：对于需要安全审批的基础设施变更，他们把 Terraform 计划复制进 Claude Code，问"这要做什么？我会后悔吗？"这形成了更紧的反馈环，让安全团队更容易快速审查和批准基础设施变更，减少开发流程中的瓶颈。</li>
+<li><strong>文档综合与 runbook</strong>：他们让 Claude Code 摄入多个文档来源，创建 Markdown 格式的 runbook、排查指南与概览。他们把这些浓缩文档作为排查真实问题的上下文，比翻遍完整知识库更高效。</li>
+<li><strong>测试驱动开发工作流</strong>：他们不再沿用"设计文档→粗糙代码→重构→放弃测试"的旧模式，而是让 Claude Code 给出伪代码，引导它走测试驱动开发，并在卡住时周期性介入纠偏，从而得到更可靠、可测试的代码。</li>
+<li><strong>上下文切换与项目入职</strong>：在为既有项目（如用于安全审批工作流的 Web 应用 "dependant"）做贡献时，他们用 Claude Code 编写、审查并执行以 Markdown 写就、存放在代码库中的规格说明，使有实质意义的贡献在数天内而非数周内达成。</li>
+</ul>
+
+<h3>团队影响</h3>
+<ul>
+<li><strong>缩短事件解决时间</strong>：通常需 10–15 分钟手动扫代码的基础设施调试，现在只需约 5 分钟。</li>
+<li><strong>改善安全审查周期</strong>：需要安全审批的 Terraform 代码审查快得多，消除了开发者等待安全团队批准时的阻塞。</li>
+<li><strong>增强跨职能贡献</strong>：成员能在数天内而非数周的上下文构建后，对项目的做出实质贡献。</li>
+<li><strong>更好的文档工作流</strong>：从多个来源综合出的排查指南和 runbook 创造了更高效的调试流程。</li>
+</ul>
+
+<div class="tip"><strong>安全工程团队的建议</strong>
+<ul>
+<li>大量使用自定义斜杠命令（slash command）：安全工程占据了整个 monorepo 中所有自定义斜杠命令实现的 50%。这些自定义命令简化了特定工作流、加速了重复任务。</li>
+<li>让 Claude 先开口：他们不再为代码片段提针对性问题，而是让 Claude Code "边做边提交"，并让它自主工作、定期介入，从而得到更全面的解决方案。</li>
+<li>把它用于文档：除了编码，Claude Code 在综合文档与生成结构化输出方面也很出色。他们提供写作样本和格式偏好，以获得能立即用于 Slack、Google Docs 等工具的文档，避免界面切换疲劳。</li>
+</ul></div>
+
+<h2>四、推理团队（Inference）</h2>
+<p>推理团队管理着在 Claude 读取你的提示并生成回复时存储信息的内存系统。团队成员（尤其机器学习新手）可以大量使用 Claude Code 来弥合知识鸿沟、加速工作。</p>
+
+<h3>主要使用场景</h3>
+<ul>
+<li><strong>代码库理解与入职</strong>：团队严重依赖 Claude Code 在加入复杂代码库时快速理解架构。他们不再手动搜 GitHub 仓库，而是让 Claude 找出哪些文件调用了特定功能，几秒出结果，而非去问同事或手动搜索。</li>
+<li><strong>带边界情况覆盖的单元测试生成</strong>：写完核心功能后，他们让 Claude 编写全面的单元测试。Claude 会自动补上遗漏的边界情况，把通常需要大量脑力的事在几分钟内完成，就像一个可被审查的编码助手。</li>
+<li><strong>机器学习概念讲解</strong>：没有机器学习背景的成员依赖 Claude 解释模型特定的函数与设置。原本需要一小时 Google 搜索加读文档的事，现在只需 10–20 分钟，研究时间减少 80%。</li>
+<li><strong>跨语言代码翻译</strong>：在不同编程语言中测试功能时，他们描述想测什么，Claude 就用所需语言（如 Rust）写出逻辑，免去了仅为测试而学新语言的需要。</li>
+<li><strong>命令回忆与 Kubernetes 管理</strong>：他们不再死记复杂的 Kubernetes 命令，而是问 Claude 正确语法（如"如何获取所有 Pod 或部署状态"），并收到其基础设施工作所需的确切命令。</li>
+</ul>
+
+<h3>团队影响</h3>
+<ul>
+<li><strong>加速 ML 概念学习</strong>：研究时间减少 80%——原本一小时 Google 搜索，现在只需 10–20 分钟。</li>
+<li><strong>更快的代码库导航</strong>：能在数秒内找到相关文件并理解系统架构，而非去问同事。</li>
+<li><strong>全面的测试覆盖</strong>：Claude 自动生成带边界情况的单元测试，在维持代码质量的同时减轻脑力负担。</li>
+<li><strong>消除语言障碍</strong>：能在不懂 Rust 等陌生语言的情况下实现功能，无需去学习它。</li>
+</ul>
+
+<div class="tip"><strong>推理团队的建议</strong>
+<ul>
+<li>先测试知识库功能：试着问各种问题，看 Claude 是否比 Google 搜索更快。如果更快更准，它就是工作流中宝贵的省时工具。</li>
+<li>从代码生成起步：给 Claude 具体指令，让它写逻辑，然后验证正确性。这有助于在使用它做更复杂任务前，先建立对工具能力的信任。</li>
+<li>用它写测试：让 Claude 写单元测试能显著缓解日常开发工作的压力。利用这一特性在不用花时间手动推演所有测试用例的情况下维持代码质量。</li>
+</ul></div>
+
+<h2>五、数据科学与可视化团队（Data Science & Visualization）</h2>
+<p>数据科学与 ML 工程团队需要精密的可视化工具来理解模型表现，但构建这些工具常需要不熟悉的语言和框架方面的专长。Claude Code 让这些团队无需成为全栈开发者，也能构建生产级的分析仪表盘。</p>
+
+<h3>主要使用场景</h3>
+<ul>
+<li><strong>构建 JavaScript/TypeScript 仪表盘应用</strong>：尽管"几乎不懂 JavaScript 和 TypeScript"，团队仍用 Claude Code 构建整个 React 应用来可视化 RL 模型表现与训练数据。他们让 Claude 掌控、从零编写完整应用（如一个 5000 行的 TypeScript 应用），而无需自己理解代码。这很关键，因为可视化应用上下文相对低、不需要理解整个 monorepo，从而能快速原型化工具，在训练和评估期间理解模型表现。</li>
+<li><strong>处理重复性重构任务</strong>：面对合并冲突或"编辑器宏太复杂、又不足以动用大型开发投入"的半复杂文件重构时，他们把 Claude Code 当"老虎机"用——先提交自己的状态，让 Claude 自主工作 30 分钟，结果能用就接受，不行就从零重来。</li>
+<li><strong>创建持久的分析工具，而非一次性笔记本</strong>：团队不再构建会被丢弃的临时 Jupyter 笔记本，而是让 Claude 构建可跨未来模型评估复用的永久 React 仪表盘。这很重要，因为理解 Claude 的表现"对团队是最重要的事之一"——他们需要理解模型在训练和评估期间如何表现，而"这其实并不简单，简单工具没法从单个数字上涨中得到太多信号"。</li>
+<li><strong>零依赖的任务委派</strong>：对于完全不熟悉的代码库或语言中的任务，他们把整个实现委派给 Claude Code，利用它从 monorepo 收集上下文、在无需自己参与实际编码过程的情况下执行任务。这让他们能在专业领域之外保持生产力，而不必花时间学新技术。</li>
+</ul>
+
+<h3>团队影响</h3>
+<ul>
+<li><strong>实现 2–4 倍的时间节省</strong>：原本繁琐但可手动完成的常规重构任务，现在快得多。</li>
+<li><strong>用陌生语言构建复杂应用</strong>：在几乎没 JavaScript/TypeScript 经验的情况下，创建了 5000 行的 TypeScript 应用。</li>
+<li><strong>从一次性到持久化工具</strong>：不再用可丢的 Jupyter 笔记本，而是构建可复用的 React 仪表盘用于模型分析。</li>
+<li><strong>直接的模型改进洞察</strong>：一手的 Claude Code 经验为未来模型迭代中更好的内存系统和 UX 改进提供了依据。</li>
+<li><strong>启用可视化驱动的决策</strong>：通过高级数据可视化工具，更好地理解 Claude 在训练和评估期间的表现。</li>
+</ul>
+
+<div class="tip"><strong>数据科学与 ML 工程团队的建议</strong>
+<ul>
+<li>把它当老虎机用：在让 Claude 工作前先保存状态，让它跑 30 分钟，然后要么接受结果要么从头再来，而不要去和它死磕纠错。从头重做往往比修补 Claude 的错误成功率更高。</li>
+<li>需要时打断以追求简单：监督时，别犹豫去停下 Claude 问"你为什么这么做？试试更简单的"。模型默认倾向于更复杂的方案，但对"用更简单方法"的请求响应良好。</li>
+</ul></div>
+
+<h2>六、API 知识团队（API Knowledge）</h2>
+<p>API 知识团队负责 PDF 支持、引用（citations）、Web 搜索等把额外知识引入 Claude 上下文窗口的功能。在庞大复杂的代码库上工作意味着不断遇到不熟悉的代码段、花费大量时间弄清任何给定任务该查哪些文件、并在改动前先构建上下文。Claude Code 通过充当指南——帮助理解系统架构、定位相关文件、解释复杂交互——改善了这一体验。</p>
+
+<h3>主要使用场景</h3>
+<ul>
+<li><strong>第一步工作流规划</strong>：团队把 Claude Code 作为任何任务的"第一站"，让它指出修复缺陷、功能开发或分析该查哪些文件。这替代了开始工作前手动导航代码库、收集上下文这一传统耗时过程。</li>
+<li><strong>跨代码库的独立调试</strong>：团队现在有信心去攻克代码库中不熟悉的模块的缺陷，而不是求助于他人。他们可以问 Claude"你觉得能修这个 bug 吗？我看到的现像是这样"，往往立即取得进展——鉴于所需的时间投入，这在以前是不可行的。</li>
+<li><strong>通过内部试用（dogfooding）做模型迭代测试</strong>：Claude Code 自动使用最新的研究模型快照，使之成为他们体验模型变化的主要方式。这让他们在开发周期中获得关于模型行为变化的直接反馈，而这是以往发布中所没有的。</li>
+<li><strong>消除上下文切换开销</strong>：他们不再复制代码片段、把文件拖进 Claude.ai 并大段解释问题，而是能在 Claude Code 中直接提问而无需额外收集上下文，显著降低了脑力开销。</li>
+</ul>
+
+<h3>团队影响</h3>
+<ul>
+<li><strong>攻克陌生领域的信心增强</strong>：成员能在不熟悉的代码库中独立调试缺陷、调查事件。</li>
+<li><strong>上下文收集上的显著时间节省</strong>：消除了复制代码片段、把文件拖进 Claude.ai 的开销，减轻了心智上的上下文切换负担。</li>
+<li><strong>更快的轮岗入职</strong>：轮岗到新团队的工程师能快速导航不熟悉的代码库并做出实质贡献，无需大量请教同事。</li>
+<li><strong>开发者幸福感提升</strong>：团队报告说日常流程摩擦减少，感到更快乐、更高产。</li>
+</ul>
+
+<div class="tip"><strong>API 知识团队的建议</strong>
+<ul>
+<li>把它当作迭代伙伴，而非一次性方案：不要期待 Claude 立即解决问题，而是把它当作可与之迭代的协作者。这比试图一次就拿到完美方案效果更好。</li>
+<li>用它来在不熟悉领域建立信心：别犹豫去攻克专业范围之外的缺陷或调查事件——Claude Code 让在通常需大量上下文构建的领域独立工作变得可行。</li>
+<li>从最少信息起步：只带着你所需的最少信息开始，让 Claude 引导你走完流程，而非预先塞入大量解释。</li>
+</ul></div>
+
+<h2>七、增长营销团队（Growth Marketing）</h2>
+<p>增长营销团队聚焦在付费搜索、付费社交、移动应用商店、邮件营销和 SEO 上搭建效果营销渠道。作为一个只有一人的非技术团队，他们用 Claude Code 来自动化重复的营销任务，并创建传统上需要大量工程资源的智能体式工作流。</p>
+
+<h3>主要使用场景</h3>
+<ul>
+<li><strong>Google Ads 创意自动生成</strong>：团队构建了一个智能体式工作流，处理包含数百条带表现指标的现有广告的 CSV 文件，识别表现欠佳、需要迭代的广告，并生成符合严格字数限制（标题 30 字符、描述 90 字符）的新变体。系统使用两个专门的子智能体（一个管标题、一个管描述），能在几分钟内生成数百条新广告，而非要在多个广告系列中手动创建。这让他们能规模化地测试和迭代——这在以前需要花费大量时间。</li>
+<li><strong>用于批量创意生产的 Figma 插件</strong>：他们不再为付费社交广告手动复制、编辑静态图，而是开发了一个 Figma 插件，通过替换标题和描述来识别画框并以编程方式生成最多 100 个广告变体，把原本数小时的复制粘贴缩短到每批半秒。这实现了 10 倍创意产出，让团队能在关键社交渠道上测试多得多的创意变体。</li>
+<li><strong>用于广告系列分析的 Meta Ads MCP 服务器</strong>：他们创建了一个与 Meta Ads API 集成的 MCP 服务器，直接在 Claude Desktop 应用中查询广告系列表现、支出数据和广告效果，无需在平台间切换做表现分析，在每一分效率提升都意味着更好 ROI 的地方节省了关键时间。</li>
+<li><strong>带内存系统的进阶提示工程</strong>：他们实现了一个雏形级的内存系统，记录跨广告迭代的假设与实验，使系统在生成新变体时能把以往测试结果拉入上下文，形成自我改进的测试框架。这实现了靠人工无法追踪的系统性实验。</li>
+</ul>
+
+<h3>团队影响</h3>
+<ul>
+<li><strong>重复任务上的巨大时间节省</strong>：广告文案创作从 2 小时缩短到 15 分钟，腾出时间做战略工作。</li>
+<li><strong>创意产出 10 倍增长</strong>：借助自动生成与 Figma 集成，团队能跨渠道测试多得多的广告变体。</li>
+<li><strong>像更大的团队一样运转</strong>：团队能处理传统上需要专门工程资源的任务。</li>
+<li><strong>战略重心转移</strong>：团队能把更多时间花在整体战略和构建智能体式自动化上，而非手动执行。</li>
+</ul>
+
+<div class="tip"><strong>增长营销团队的建议</strong>
+<ul>
+<li>识别有 API 支撑的重复任务：寻找涉及带 API 的工具（如广告平台、设计工具、分析平台）的重复性动作的工作流。这些是自动化的首选对象，也是 Claude Code 价值最大的地方。</li>
+<li>把复杂工作流拆成专门的子智能体：与其试图在一个提示词或工作流里处理一切，不如为特定任务创建独立智能体（如他们的标题智能体 vs 描述智能体）。这让调试更简单，并在处理复杂需求时提高产出质量。</li>
+<li>编码前充分头脑风暴并做提示词规划：花大量时间在 Claude.ai 上先把整个工作流想透，再让 Claude.ai 为 Claude Code 创建一份全面的提示词与代码结构作参考。同时，逐步推进而非要求一次性方案，避免 Claude 被复杂任务压垮。</li>
+</ul></div>
+
+<h2>八、产品设计团队（Product Design）</h2>
+<p>产品设计团队支持 Claude Code、Claude.ai 和 Anthropic API，专长是构建 AI 产品。即便非开发者也能用 Claude Code 弥合设计与工程之间的传统鸿沟，无需与工程师反复拉扯即可直接实现自己的设计愿景。</p>
+
+<h3>主要使用场景</h3>
+<ul>
+<li><strong>前端打磨与状态管理变更</strong>：他们不再为视觉微调（字体、颜色、间距）创建大量设计文档、与工程师走多轮反馈，而是直接用 Claude Code 实现这些变更。工程师注意到他们正在做"你通常看不到设计师做的大型状态管理变更"，让他们能达成设想中的确切质量。</li>
+<li><strong>GitHub Actions 自动建单</strong>：利用 Claude Code 的 GitHub 集成，他们只需提交描述所需变更的问题/工单，Claude 就会自动提出代码方案，无需打开 Claude Code，为他们积压的打磨任务创造了无缝的缺陷修复与功能完善工作流。</li>
+<li><strong>快速交互式原型</strong>：通过把模型图粘贴进 Claude Code，他们生成工程师能立即理解并迭代的功能完备原型，替代了传统"静态 Figma 设计需大量解释和转译才能变成工作代码"的循环。</li>
+<li><strong>边界情况发现与系统架构理解</strong>：他们用 Claude Code 描绘错误状态、逻辑流和不同系统状态，从而能在设计阶段就识别边界情况，而不是在开发后期才发现，从根本上改善了初始设计的质量。</li>
+<li><strong>复杂文案变更与法律合规</strong>：对于诸如在全代码库中移除"research preview"措辞之类的任务，他们用 Claude Code 找出所有实例、审查周边文案、与法务实时协调变更、并实现更新——这一过程花了两个 30 分钟通话，而非一周的来回协调。</li>
+</ul>
+
+<h3>团队影响</h3>
+<ul>
+<li><strong>重塑核心工作流</strong>：Claude Code 成为主要设计工具，Figma 与 Claude Code 有 80% 的时间同时开着。</li>
+<li><strong>执行快 2–3 倍</strong>：以往需要大量与工程师来回的视觉与状态管理变更，现在直接实现。</li>
+<li><strong>周期从数周到数小时</strong>：像 GA 发布措辞这类复杂项目，原本需一周协调，现在两个 30 分钟通话即可完成。</li>
+<li><strong>两种截然不同的用户体验</strong>：开发者得到"增强型工作流"（更快执行），而非技术用户得到"天哪，我成开发者了"的工作流（以往不可能的全新能力）。</li>
+<li><strong>改善设计-工程协作</strong>：更好的沟通、更快的问题解决，因为设计师能前瞻性地理解系统约束与可能性。</li>
+</ul>
+
+<div class="tip"><strong>产品设计团队的建议</strong>
+<ul>
+<li>从工程师处获取正确的初始配置帮助：让工程同事帮忙做初始代码库配置和权限——技术入门对非开发者有挑战，但一旦配好，它对日常流程就是变革性的。</li>
+<li>用自定义内存文件引导 Claude 的行为：创建具体指令，告诉 Claude 你是个编码经验很少的设计师，需要详细解释和更小、更渐进的变更，这会显著改善 Claude 回复的质量、让它不那么令人生畏。</li>
+<li>利用图片粘贴做原型：用 Command+V 把截图直接粘进 Claude Code——它极擅长读取设计并生成功能代码，对把静态模型图变成工程师能立即理解、在其上构建的交互式原型极其宝贵。</li>
+</ul></div>
+
+<h2>九、RL 工程团队（RL Engineering）</h2>
+<p>RL 工程团队聚焦 RL 中的高效采样以及跨集群的权重传输。他们主要用 Claude Code 编写中小型功能、调试、理解复杂代码库，采用包含频繁检查点与回滚的迭代方法。</p>
+
+<h3>主要使用场景</h3>
+<ul>
+<li><strong>带监督自主性的功能开发</strong>：团队让 Claude Code 编写中小功能的大部分代码，同时提供监督，例如为权重传输组件实现鉴权机制。他们交互式地工作，让 Claude 主导，但在它跑偏时纠偏。</li>
+<li><strong>测试生成与代码审查</strong>：在自己实现变更后，他们让 Claude Code 添加测试或审查代码。这一自动化测试工作流在常规但重要的质量保证任务上节省了大量时间。</li>
+<li><strong>调试与错误调查</strong>：他们用 Claude Code 调试错误，结果参差——有时它立即定位问题并添加相关测试，其他时候则难以理解问题，但总体而言在奏效时提供了价值。</li>
+<li><strong>代码库理解与调用栈分析</strong>：他们工作流中最大的变化之一，是用 Claude Code 获取相关组件和调用栈的快速摘要，替代了手动读代码或生成大量调试输出。</li>
+<li><strong>Kubernetes 运维指导</strong>：他们频繁就 Kubernetes 运维向 Claude Code 提问——这些原本需要大量 Google 搜索，现在能就配置和部署问题获得即时答案。</li>
+</ul>
+
+<h3>开发工作流影响</h3>
+<ul>
+<li><strong>启用实验性方法</strong>：他们现在使用"尝试并回滚"的方法论，频繁提交检查点，以便测试 Claude 的自主实现尝试、不行就回退，从而能更大胆地实验。</li>
+<li><strong>文档加速</strong>：Claude Code 自动添加有用注释，在文档上节省大量时间，尽管他们指出它有时会在奇怪的地方加注释或使用存疑的代码组织。</li>
+<li><strong>有局限的加速</strong>：虽然 Claude Code 能以"相对较少的时间"实现中小 PR，但他们承认首次尝试只在约三分之一的情况下奏效，需要额外指导或手动介入。</li>
+</ul>
+
+<div class="tip"><strong>RL 工程团队的建议</strong>
+<ul>
+<li>为特定模式自定义 Claude.md 文件：在 Claude.md 中加入指令，防止 Claude 重复犯工具调用错误，例如告诉它"运行 pytest 而不是 run，也不要不必要的 cd——直接用正确的路径"。这显著提升了稳定性。</li>
+<li>使用检查点密集的工作流：在 Claude 做改动时定期提交工作，以便实验不顺时能轻松回滚。这能在无风险的情况下实现更具实验性的开发方法。</li>
+<li>先试一次性方案，再协作：给 Claude 一个快速提示词，先让它尝试完整实现。如果奏效（约三分之一概率），你就省了大量时间；如果不奏效，再切换到更具协作性、引导式的方法。</li>
+</ul></div>
+
+<h2>十、法务团队（Legal）</h2>
+<p>法务团队通过试验、以及想了解 Anthropic 产品 offerings 的意愿，发现了 Claude Code 的潜力。此外，一位团队成员有个与为家人创建无障碍工具相关的个人用例，以及展示该技术对非开发者之力量的工作原型。</p>
+
+<h3>主要使用场景</h3>
+<ul>
+<li><strong>为家人定制的无障碍解决方案</strong>：成员为因医疗诊断而有表达困难的家人构建了沟通助手。仅用一小时，他们就用原生语音转文字创建了一个预测性文本应用，能建议回复并用语音库朗读出来，弥补了言语治疗师推荐的无障碍工具的缺口。</li>
+<li><strong>法务部门工作流自动化</strong>：他们创建了原型"电话树"系统，帮助成员联系到 Anthropic 正确的律师，展示了法务部门如何在没有传统开发资源的情况下，为常见任务构建定制工具。</li>
+<li><strong>团队协调工具</strong>：管理者构建了 G Suite 应用，自动化每周团队更新并跨产品追踪法务审查状态，让律师通过简单的按钮点击（而非电子表格管理）快速标记需审查的事项。</li>
+<li><strong>用于方案验证的快速原型</strong>：他们用 Claude Code 快速构建功能完备的原型，可以展示给领域专家（如向 UCSF 专家展示无障碍工具）以验证想法、并在投入更多时间前识别现有方案。</li>
+</ul>
+
+<h3>工作风格与影响</h3>
+<ul>
+<li><strong>在 Claude.ai 规划，在 Claude Code 构建</strong>：他们用两步流程，先在 Claude.ai 头脑风暴和规划，再转到 Claude Code 实现，让它放慢速度、逐步工作，而非一次性全部输出。</li>
+<li><strong>视觉优先的方法</strong>：他们频繁用截图向 Claude Code 展示想要的界面样子，再基于视觉反馈迭代，而非用文字描述功能。</li>
+<li><strong>原型驱动的创新</strong>：他们强调要克服分享"傻"或"玩具"原型的恐惧，因为这些演示能启发他人看到他们未曾考虑的可能性。</li>
+<li><strong>安全与合规意识</strong>：
+  <ul>
+    <li>MCP 集成顾虑：作为产品律师，他们立即识别出深度 MCP 集成的安全含义，指出随着 AI 工具触及更敏感的系统，保守的安全姿态会造成障碍。</li>
+    <li>合规工具优先级：他们主张在 AI 能力扩张时快速构建合规工具，认识到创新与风险管理之间的平衡。</li>
+  </ul>
+</li>
+</ul>
+
+<div class="tip"><strong>法务部门的建议</strong>
+<ul>
+<li>先在 Claude.ai 充分规划：用 Claude 的对话界面在转到 Claude Code 前把整个想法想透，然后让 Claude 把所有内容总结成一份逐步实现的提示词。</li>
+<li>渐进式、视觉化地工作：让 Claude Code 放慢速度、一次实现一个步骤，这样你能复制粘贴而不被淹没。大量使用截图来展示想要的界面样子。</li>
+<li>尽管不完美也分享原型：克服隐藏"玩具"项目或未完工工作的冲动——分享原型能帮助他人看到可能性，并在通常不互动的部门间激发创新。</li>
+</ul></div>
+
+<hr>
+<p><em>全文翻译完毕。本文为 Anthropic 内部各部门使用 Claude Code 的实战案例汇编，共 10 个部门章节，术语以本资料包 glossary.md 为准。原文为图片型 PDF 经 OCR/文本层抽取，个别字符（如 "eng1neer1ng"）为抽取噪声，已按语义校正。</em></p>
+
+</body>
+</html>

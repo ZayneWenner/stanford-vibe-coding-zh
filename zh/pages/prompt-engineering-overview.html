@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>提示工程：概述与指南 | Google Cloud</title>
+<style>
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;max-width:860px;margin:auto;padding:24px;line-height:1.8;color:#1a1a1a}
+h1,h2,h3,h4{border-bottom:1px solid #eee;padding-bottom:6px}
+h1{font-size:1.9em}
+h2{font-size:1.5em;margin-top:2em}
+h3{font-size:1.25em}
+h4{font-size:1.05em;border-bottom:none;padding-bottom:2px;margin-bottom:.2em;color:#333}
+pre,code{background:#f6f8fa;padding:2px 6px;border-radius:4px;font-family:ui-monospace,Consolas,monospace;overflow-x:auto}
+pre{padding:16px}
+blockquote{border-left:4px solid #ccc;margin:0;padding:0 16px;color:#555}
+a{color:#0366d6}
+table{border-collapse:collapse;width:100%}
+td,th{border:1px solid #ddd;padding:8px}
+p.ex{background:#f6f8fa;border-left:4px solid #0366d6;padding:8px 12px;border-radius:0 4px 4px 0;font-family:ui-monospace,Consolas,monospace;white-space:pre-wrap}
+p.hdr{color:#555;font-size:.95em;letter-spacing:.05em}
+li{margin:.3em 0}
+.note{color:#666;font-size:.9em}
+</style>
+</head>
+<body>
+
+<p><em>来源：https://cloud.google.com/discover/what-is-prompt-engineering ｜ 机器翻译+人工校对稿，术语以 glossary.md 为准。</em></p>
+
+<h1>提示工程：概述与指南</h1>
+<p><em>最后更新：2026/01/14</em></p>
+
+<p>大语言模型（LLM）的兴起为人机交互带来了令人振奋的新可能。然而，要充分发挥这些强大 AI 模型的全部潜力，需要掌握一项关键技能：提示工程。这一新兴领域专注于精心构建有效的提示，以释放<a href="https://cloud.google.com/ai/llms">大语言模型（LLM）的能力</a>，使其能够理解意图、遵循指令并生成期望的输出。随着我们在各类应用中与 AI 的交互日益增多，提示工程在确保互动准确、相关且安全方面发挥着至关重要的作用。</p>
+
+<p class="note"><strong>快速入口：</strong></p>
+<ul class="note">
+<li>免费开始使用</li>
+<li>试用聊天提示</li>
+<li><a href="https://www.youtube.com/watch?v=RywP7cCYUWE">观看视频（1:53）</a></li>
+<li>成为世界一流提示工程师的秘诀</li>
+</ul>
+
+<h2>什么是提示工程？</h2>
+<p>提示工程是一门艺术与科学，它通过设计和优化提示来引导 AI 模型（尤其是大语言模型（LLM））生成期望的回应。通过精心构建提示，你为模型提供上下文、指令和示例，帮助它理解你的意图并以有意义的方式作出响应。可以把它看作是为 AI 提供一张路线图，引导它朝着你心中特定的输出方向前进。</p>
+<p>想更深入地了解提示设计的世界并探索其应用，请查看 Google Cloud 上的<a href="https://cloud.google.com/vertex-ai/generative-ai/docs/learn/introduction-prompt-design">提示设计入门</a>。</p>
+<p>准备好亲自尝试大语言模型（LLM）和提示工程了吗？试用 <a href="https://console.cloud.google.com/freetrial?redirectPath=/vertex-ai/">Vertex AI</a> 免费版，亲身体验这项技术的威力。</p>
+
+<h2>什么是 AI 的提示（prompt）？</h2>
+<p>在<a href="https://cloud.google.com/learn/what-is-artificial-intelligence">AI 的语境下</a>，提示（prompt）是你提供给模型以引发特定响应的输入。它可以有多种形式，从简单的问题或关键词，到复杂的指令、代码片段，甚至创意写作样本。提示的有效性直接影响 AI 输出的质量与相关度。</p>
+
+<h2>进行提示工程需要什么？</h2>
+<p>若干关键要素共同构成了有效的提示工程。掌握这些要素，你就能与 AI 模型高效沟通，释放其全部潜力。</p>
+
+<h3>提示的格式</h3>
+<p>提示的结构与风格在引导 AI 响应方面起着重要作用。不同的模型可能更适配特定的格式，例如：</p>
+<p>提示的格式在很大程度上决定了 AI 如何解读你的请求。不同的模型可能更适配特定的格式，例如<a href="https://cloud.google.com/learn/what-is-natural-language-processing">自然语言问题</a>、直接命令，或带有特定字段的结构化输入。了解模型的能力与偏好格式，对于构建有效的提示至关重要。</p>
+
+<h3>上下文与示例</h3>
+<p>在提示中提供上下文和相关示例，有助于 AI 理解目标任务并生成更准确、更相关的输出。例如，如果你想要一个创意故事，加入几句描述期望基调或主题的文字，就能显著改善结果。</p>
+
+<h3>微调与适配</h3>
+<p>使用定制化的提示针对特定任务或领域对 AI 模型进行微调（Fine-tuning），可以提升其表现。此外，基于用户反馈或模型输出不断调整提示，还能随着时间的推移进一步改善模型的回应。</p>
+
+<h3>多轮对话</h3>
+<p>为多轮对话设计提示，能让用户与 AI 模型进行连续且具备上下文感知的交互，从而提升整体用户体验。</p>
+
+<h2>提示的类型</h2>
+<p>AI 中使用了多种类型的提示，各自服务于特定的目的：</p>
+
+<h3>直接提示（零样本 / Zero-shot）</h3>
+<p>零样本提示（Zero-shot prompting）是指在不提供任何额外上下文或示例的情况下，直接给模型一条指令或一个问题。</p>
+<p>一个例子是创意生成，即提示模型产生创意想法或头脑风暴式解决方案。另一个例子是摘要或翻译，即要求模型对某段内容进行总结或翻译。</p>
+
+<h3>单样本、少样本与多样本提示</h3>
+<p>这种方法是在给出实际提示之前，先向模型提供一个或多个期望的输入—输出示例对。这有助于模型更好地理解任务，并生成更准确的回应。</p>
+
+<h3>思维链提示（Chain-of-Thought）</h3>
+<p>思维链（CoT）提示鼓励模型将复杂推理拆解为一系列中间步骤，从而得到更全面、结构更清晰的最终输出。</p>
+
+<h3>零样本思维链提示</h3>
+<p>将思维链提示与零样本提示相结合，要求模型执行推理步骤，往往能产出更好的输出。</p>
+
+<h2>提示工程的应用场景与示例</h2>
+<p>以下是一些具体示例与应用场景，展示提示工程如何帮助生成定制化且相关的输出。</p>
+
+<h3>语言与文本生成</h3>
+<p class="hdr">场景 ｜ 说明 ｜ 示例提示</p>
+
+<h4>创意写作</h4>
+<p>构建明确体裁、语气、风格与情节要点的提示，引导 AI 生成引人入胜的叙事。</p>
+<p class="ex">"Write a short story about a young woman who discovers a magical portal in her attic."</p>
+
+<h4>摘要</h4>
+<p>向 AI 提供文本，并指示其生成能抓住关键信息的简明摘要。</p>
+<p class="ex">"Summarize the main points of the following news article on climate change."</p>
+
+<h4>翻译</h4>
+<p>指定源语言与目标语言，使 AI 能在保留含义与语境的前提下准确翻译文本。</p>
+<p class="ex">"Translate the following text from English to Spanish: 'The quick brown fox jumps over the lazy dog.'"</p>
+
+<h4>对话</h4>
+<p>设计能模拟对话的提示，让 AI 生成模仿人类交互并保持上下文的回应。</p>
+<p class="ex">"You are a friendly chatbot helping users troubleshoot their computer problems. Respond to the user's query: 'My computer won't turn on.'"</p>
+
+<h3>问答</h3>
+<p class="hdr">场景 ｜ 说明 ｜ 示例提示</p>
+
+<h4>开放式问题</h4>
+<p>构建能鼓励 AI 基于其知识库提供全面且信息丰富的答案的提示。</p>
+<p class="ex">"Explain the concept of quantum computing and its potential impact on the future of technology."</p>
+
+<h4>具体问题</h4>
+<p>设计针对特定信息的提示，使 AI 能从给定上下文或其内部知识库中检索出精准答案。</p>
+<p class="ex">"What is the capital of France?" or "According to the provided text, what are the main causes of deforestation?"</p>
+
+<h4>多项选择题</h4>
+<p>给出带选项的提示，促使 AI 根据对上下文的理解进行分析并选出最恰当的答案。</p>
+<p class="ex">"Who wrote the Harry Potter series? A) J.R.R. Tolkien, B) J.K. Rowling, C) Stephen King"</p>
+
+<h4>假设性问题</h4>
+<p>构建探索假设性情境的提示，让 AI 进行推理、推测，并给出可能的结果或解决方案。</p>
+<p class="ex">"What would happen if humans could travel at the speed of light?"</p>
+
+<h4>基于观点的问题</h4>
+<p>设计能引出 AI 对特定话题的看法或观点的提示，促使其为自己的立场提供推理与论证。</p>
+<p class="ex">"Do you believe that artificial intelligence will eventually surpass human intelligence? Why or why not?"</p>
+
+<h3>代码生成</h3>
+<p class="hdr">场景 ｜ 说明 ｜ 示例提示</p>
+
+<h4>代码补全</h4>
+<p>向 AI 提供部分代码片段，并提示其根据上下文与编程语言建议或补全剩余代码。</p>
+<p class="ex">"Write a Python function to calculate the factorial of a given number."</p>
+
+<h4>代码翻译</h4>
+<p>指定源语言与目标编程语言，使 AI 在保留功能与语法的前提下翻译代码。</p>
+<p class="ex">"Translate the following Python code to JavaScript: def greet(name): print('Hello,', name)"</p>
+
+<h4>代码优化</h4>
+<p>提示 AI 分析现有代码，并就效率、可读性 or 性能提出改进建议。</p>
+<p class="ex">"Optimize the following Python code to reduce its execution time."</p>
+
+<h4>代码调试</h4>
+<p>向 AI 提供含有错误的代码，并提示其识别问题并就所发现的缺陷提出可能的解决方案。</p>
+<p class="ex">"Debug the following Java code and explain why it is throwing a NullPointerException."</p>
+
+<h3>图像生成</h3>
+<p class="hdr">场景 ｜ 说明 ｜ 示例提示</p>
+
+<h4>写实图像</h4>
+<p>构建详细描述期望图像的提示，包含物体、场景、光线与风格等，以生成逼真且高质量的图像。</p>
+<p class="ex">"A photorealistic image of a sunset over the ocean with palm trees silhouetted against the sky."</p>
+
+<h4>艺术风格图像</h4>
+<p>设计明确艺术风格、技法与主题的提示，引导 AI 创作模仿特定艺术流派或唤起某种情感的图像。</p>
+<p class="ex">"An impressionist painting of a bustling city street with people walking under umbrellas in the rain."</p>
+
+<h4>抽象图像</h4>
+<p>构建鼓励 AI 生成开放可解读图像的提示，利用形状、色彩与纹理来唤起情感或概念。</p>
+<p class="ex">"An abstract image representing the concept of hope, using bright colors and flowing shapes."</p>
+
+<h4>图像编辑</h4>
+<p>向 AI 提供现有图像并指明所需的修改，使其能按给定指令编辑并增强图像。</p>
+<p class="ex">"Change the background of this photo to a starry night sky and add a full moon." or "Remove the person from this image and replace them with a cat."</p>
+
+<h2>撰写更好提示的策略</h2>
+<p>开发有效的提示需要策略性方法。考虑以下策略来提升你的提示工程技能：</p>
+
+<h3>1. 设定清晰的目标与目的</h3>
+<p class="hdr">策略 ｜ 提示示例</p>
+<p><strong>使用动作动词明确期望的动作</strong></p>
+<p class="ex">"Write a bulleted list that summarizes the key findings of the attached research paper"</p>
+<p><strong>明确输出的期望长度与格式</strong></p>
+<p class="ex">"Compose a 500-word essay discussing the impact of climate change on coastal communities."</p>
+<p><strong>明确目标受众</strong></p>
+<p class="ex">"Write a product description for a new line of organic skincare products, targeting young adults concerned with sustainability."</p>
+
+<h3>2. 提供上下文与背景信息</h3>
+<p class="hdr">策略 ｜ 提示示例</p>
+<p><strong>包含相关事实与数据</strong></p>
+<p class="ex">"Given that global temperatures have risen by 1 degree Celsius since the pre-industrial era, discuss the potential consequences for sea level rise."</p>
+<p><strong>引用具体的来源或文档</strong></p>
+<p class="ex">"Based on the attached financial report, analyze the company's profitability over the past five years."</p>
+<p><strong>定义关键术语与概念</strong></p>
+<p class="ex">"Explain the concept of quantum computing in simple terms, suitable for a non-technical audience."</p>
+
+<h3>3. 使用少样本提示（Few-Shot Prompting）</h3>
+<p class="hdr">策略 ｜ 提示示例</p>
+<p><strong>提供若干期望的输入—输出示例对</strong></p>
+<p class="ex">Input: "Cat" Output: "A small furry mammal with whiskers." Input: "Dog" Output: "A domesticated canine known for its loyalty." Prompt: "Elephant"</p>
+<p><strong>展示期望的风格或语气</strong></p>
+<p class="ex">Example 1 (humorous): "The politician's speech was so dull, it could cure insomnia." Example 2 (formal): "The dignitary delivered an address that was both informative and engaging." Prompt: "Write a sentence describing the comedian's stand-up routine."</p>
+<p><strong>展示期望的详略程度</strong></p>
+<p class="ex">Example 1 (brief): "The movie was about a young boy who befriends an alien." Example 2 (detailed): "The science fiction film follows the story of Elliot, a lonely boy who discovers and forms a unique bond with an extraterrestrial stranded on Earth." Prompt: "Summarize the plot of the novel you just finished reading."</p>
+
+<h3>4. 要具体明确</h3>
+<p class="hdr">策略 ｜ 提示示例</p>
+<p><strong>使用精确语言，避免歧义</strong></p>
+<p class="ex">Instead of: "Write something about climate change," use: "Write a persuasive essay arguing for the implementation of stricter carbon emission regulations."</p>
+<p><strong>尽可能量化你的要求</strong></p>
+<p class="ex">Instead of: "Write a long poem," use: "Write a sonnet with 14 lines that explores themes of love and loss."</p>
+<p><strong>将复杂任务拆解为更小的步骤</strong></p>
+<p class="ex">Instead of: "Create a marketing plan," use: "1. Identify the target audience. 2. Develop key marketing messages. 3. Choose appropriate marketing channels."</p>
+
+<h3>5. 迭代与实验</h3>
+<p class="hdr">策略 ｜ 动作</p>
+<p><strong>尝试不同的措辞与关键词</strong></p>
+<p class="ex">"Rephrase your prompt using synonyms or alternative sentence structures."</p>
+<p><strong>调整详略程度与具体性</strong></p>
+<p class="ex">"Add or remove information to fine-tune the output."</p>
+<p><strong>测试不同的提示长度</strong></p>
+<p class="ex">"Experiment with both shorter and longer prompts to find the optimal balance."</p>
+
+<h3>6. 善用思维链提示（Chain-of-Thought Prompting）</h3>
+<p class="hdr">策略 ｜ 提示示例</p>
+<p><strong>鼓励逐步推理</strong></p>
+<p class="ex">"Solve this problem step-by-step: John has 5 apples, he eats 2. How many apples does he have left? Step 1: John starts with 5 apples. Step 2: He eats 2 apples, so we need to subtract 2 from 5. Step 3: 5 - 2 = 3. Answer: John has 3 apples left."</p>
+<p><strong>要求模型解释其推理过程</strong></p>
+<p class="ex">"Explain your thought process in determining the sentiment of this movie review: 'The acting was superb, but the plot was predictable.'"</p>
+<p><strong>引导模型经过合乎逻辑的思考序列</strong></p>
+<p class="ex">"To classify this email as spam or not spam, consider the following: 1. Is the sender known? 2. Does the subject line contain suspicious keywords? 3. Is the email offering something too good to be true?"</p>
+
+<p>想进一步了解提示工程的最佳实践，请查看 Google Cloud 上的<a href="https://cloud.google.com/blog/products/application-development/five-best-practices-for-prompt-engineering">提示工程五大最佳实践</a>。</p>
+
+<h2>提示工程的优势</h2>
+<p>有效的提示工程带来诸多好处，提升了 AI 模型的能力与易用性：</p>
+
+<h3>提升模型表现</h3>
+<p>精心构建的提示能为 AI 模型提供清晰的指令与上下文，从而带来更准确、更相关、更具信息量的输出。</p>
+
+<h3>减少偏见与有害回应</h3>
+<p>通过谨慎控制输入并引导 AI 的注意力，提示工程有助于缓解偏见，并最大限度降低生成不当或冒犯性内容的风险。</p>
+
+<h3>增强可控性与可预测性</h3>
+<p>提示工程使你能够影响 AI 的行为，并确保其产出与你期望的结果一致、稳定且可预测。</p>
+
+<h3>改善用户体验</h3>
+<p>清晰简洁的提示让用户更容易与 AI 模型高效互动，带来更直观、更满意的体验。</p>
+
+<h3>借助 Google Cloud 开启你的 AI 之旅</h3>
+<ul>
+<li>新客户可获赠 $300 免费额度，用于在 Google Cloud 上消费。</li>
+<li>开始使用</li>
+<li>与 Google Cloud 销售专家沟通，进一步探讨你独特的挑战。</li>
+<li>联系我们</li>
+</ul>
+
+<h2>相关 Google Cloud 产品与服务</h2>
+<p><a href="https://cloud.google.com/products/ai">查看所有 AI 产品与解决方案</a></p>
+<ul>
+<li><a href="https://cloud.google.com/vertex-ai">Vertex AI Platform</a>：数据科学家与工程师用于创建、训练、测试、监控、调优和部署机器学习（ML）与 AI 模型的统一平台。</li>
+<li><a href="https://cloud.google.com/generative-ai-studio">Generative AI on Vertex AI</a>：快速原型设计与测试生成式 AI 模型。测试示例提示、设计你自己的提示，并定制基础模型与大语言模型（LLM）。</li>
+<li><a href="https://cloud.google.com/ai/apis">AI APIs</a>：借助 Google Cloud 的 AI 与机器学习（ML）API，轻松将 AI 集成到你的应用中。</li>
+</ul>
+<p><strong>解决方案</strong></p>
+<ul>
+<li><a href="https://cloud.google.com/model-garden">Model Garden on Vertex AI</a>：通过一个统一入口发现、定制并部署来自 Google 及 Google 合作伙伴的各类模型，为你的机器学习（ML）项目提速。</li>
+</ul>
+
+<h4>入门的附加学习资源</h4>
+<p>刚接触 Google Cloud 或生成式 AI？新客户可获赠 <a href="https://cloud.google.com/free/docs/free-cloud-features">$300 免费额度</a>，用于运行、测试和部署工作负载。</p>
+<ul>
+<li><a href="https://www.cloudskillsboost.google/paths/118">培训：免费的生成式 AI 基础课程</a></li>
+<li><a href="https://cloud.google.com/vertex-ai/docs/generative-ai/learn/introduction-prompt-design">文档：提示设计入门</a></li>
+<li><a href="https://cloud.google.com/vertex-ai/docs/generative-ai/learn/prompt-design-strategies">文档：通用提示设计策略</a></li>
+<li><a href="https://cloud.google.com/vertex-ai/docs/generative-ai/learn/prompt-samples">文档：生成式 AI 提示示例</a></li>
+</ul>
+
+<h4>迈出下一步</h4>
+<p>借助 $300 免费额度与 20 余款永久免费产品，在 Google Cloud 上开始构建。</p>
+<p>免费开始使用</p>
+
+<h5>需要帮助入门？</h5>
+<p><a href="https://cloud.google.com/contact/">联系销售</a></p>
+
+<h5>与可信赖的合作伙伴协作</h5>
+<p><a href="https://cloud.google.com/find-a-partner/">寻找合作伙伴</a></p>
+
+<h5>继续浏览</h5>
+<p><a href="https://cloud.google.com/products/">查看所有产品</a></p>
+
+</body>
+</html>
